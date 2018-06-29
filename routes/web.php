@@ -41,6 +41,8 @@ Route::middleware('checkAdmin')->group(function () {
 
 Route::get('/start','UserController@start');
 Route::get('/finish','UserController@finish');
+Route::get('/form','UserController@form');
+Route::get('/checkout','UserController@checkout');
 
 Route::get('/thongtin',function(){
 	$data = App\user::find(10);
@@ -51,7 +53,7 @@ Route::get('/thongtin',function(){
 });
 
 Route::get('/time',function(){
-
+	
 	$t=time();
 	echo("<br>".$t . "<br>");
 	echo(date("h:i:sa",$t));

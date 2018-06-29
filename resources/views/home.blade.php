@@ -35,7 +35,11 @@
                     @endif
                     <div class="row">
                         <a href="{{url('/start')}}"class="btn btn-primary">Start</a>
-                </div>
+                    </div>
+                    <div class="row">
+                       <a href = "{{url('/form')}}"class="btn btn-danger">Form</a>
+
+                    </div>
             </div>
         </div>
     </div>

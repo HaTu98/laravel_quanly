@@ -21,7 +21,7 @@
                     @endif
 
                     <div class="row">
-                        <a href = "{{action('UserController@checkout')}}"class="btn btn-danger">Checkout</a>
+                        <a href = "{{url('/home')}}" class="btn btn-danger">Home</a>
                     </div>
                 </div>
             </div>
@@ -30,16 +30,18 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Start</th>
-                <th>Finish</th>
-                <th>Today</th>
-                <th>Total</th>
-                <th>Date</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Start</th>
+              <th>Finish</th>
+              <th>Today</th>
+              <th>Total</th>
+              <th>Date</th>
             </tr>
         </thead>
         <tbody>
+         
+
             @foreach($times as $time)
                 <tr>
                     <td>{{$time->id}}</td>

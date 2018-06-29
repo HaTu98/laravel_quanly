@@ -26,7 +26,6 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::get()->where('id',$id)->first();
-        dd(compact('user', 'id'));
         return view('user.edit', compact('user', 'id'));
     }
 
@@ -61,12 +60,62 @@ class UserController extends Controller
     	// 	->join('users','users.id','=','times.id')
     	// 	->where('times.id','9')
     	// 	->get();
-    	// dd($test);
+    	// dd($test);	
     	$times = times::where('id',Auth::user()->id)->get();
 
     	return view('user.start',compact("times"));
     }
     public function finish(){
-    	return view('user.finish');
+    	date_default_timezone_set("Asia/Ho_Chi_Minh");
+    	$now = time();
+    	$start = date("H:i:s",$now);
+    	$date = date('Y-m-d', $now);
+    	//dd($start, $date);
+    	$time_id = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	// times::where('id',$time['id'])->insert([
+    	// 	'id'->$time['id'],
+    	// 	'start'=>$start,
+    	// 	'date'=>$date,
+    	// ]);
+    	$time = new times();
+    	$time->id = Auth::user()->id;
+    	$time->start = $start;
+    	$time->finish = 0;
+    	$time->time_per_day = 0;
+    	$time->all_time = $time_id->all_time;
+    	$time->date = $date;
+    	$time->status = 1;
+    	$time->save();
+    	$times = times::where('id',Auth::user()->id)->get();
+    	return view('user.finish',compact("times"));
+    }
+
+    public function checkout(){
+    	date_default_timezone_set("Asia/Ho_Chi_Minh");
+    	$now = time();
+    	$finish = date("H:i:s",$now);
+    	$time_id = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	$today = ($now - strtotime($time_id->start))/3600;
+    	if($time_id->status == 1){
+    		$status = 2;
+    		times::where('time_id',$time_id->time_id)->update([
+    			'finish'=>$finish,
+    			'time_per_day' => $today,
+    			'all_time'=>$time_id->all_time + $today,
+    			'status' => $status,
+    	]);
+    	}else {
+    		//
+    	}
+    	
+    	$times = times::where('id',Auth::user()->id)->get();
+
+    	return view('user.form',compact("times"));
+    }
+
+    public function  form(){
+    	$times = times::where('id',Auth::user()->id)->get();
+
+    	return view('user.form',compact("times"));
     }
 }
