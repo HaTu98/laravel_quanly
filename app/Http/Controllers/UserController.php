@@ -60,13 +60,32 @@ class UserController extends Controller
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
-    		->get();
+    		->orderBy('date','desc')
+    		->Paginate(7);
 
-    	$status = times::where('id',Auth::user()->id)->orderBy('date','desc')->first()->status;
-    	return view('user.start',compact("times","status"));
+    	$first = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	$status = $first->status;
+
+    	if($status == 2 && date('Y-m-d',strtotime(now())) == $first->date)
+    		return redirect('/home')->with('success',"hom nay, ban da checkout roi");
+    	else
+    		return view('user.start',compact("times","status"));
     }
 
     public function finish(){
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->orderBy('date','desc')
+    		->Paginate(7);
+
+    	$first = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	$status = $first->status;
+
+    	if($status == 1 && date('Y-m-d',strtotime(now())) == date('Y-m-d',strtotime($first->start))){
+    		return view('user.finish',compact("times"));
+    	}
+    	
     	date_default_timezone_set("Asia/Ho_Chi_Minh");
     	$now = time();
     	$start = date("H:i:s",$now);
@@ -84,10 +103,7 @@ class UserController extends Controller
     	$time->status = 1;
     	$time->save();
 
-    	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',Auth::user()->id)
-    		->get();
+    	
 
     	return view('user.finish',compact("times"));
     }
@@ -110,7 +126,11 @@ class UserController extends Controller
     		//
     	}
     	
-    	$times = times::where('id',Auth::user()->id)->get();
+    	$times = $times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->orderBy('date','desc')
+    		->Paginate(7);
 
     	return view('user.form',compact("times"));
     }
@@ -119,7 +139,8 @@ class UserController extends Controller
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
-    		->get();
+    		->orderBy('date','desc')
+    		->Paginate(7);
 
     	return view('user.form',compact("times"));
     }
@@ -128,7 +149,8 @@ class UserController extends Controller
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',$id)
-    		->get();
+    		->orderBy('date','desc')
+    		->Paginate(7);
     	return view('user.editHistory',compact("times"));
     }
 }

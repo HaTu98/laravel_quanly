@@ -61,6 +61,14 @@ Route::get('/time',function(){
 	
 });
 Route::get('/check',function(){
-	//dd(Auth::user()->name);
+	$t1 = now();
+	$t = date('y-m-d',strtotime($t1));
 
+	$t2 = date('y-m-d',strtotime(now()) + 1000); 
+	if($t2 == $t){
+		echo "hello";
+	}
+	else{
+		echo "hi".$t2.$t;
+	}
 });

@@ -14,10 +14,10 @@
 
                 <div class="card-body">
                     <div class="row">
-                        @if($status == 0)
-                            <a href = "{{action('UserController@finish')}}"class="btn btn-danger">Checkin</a>
+                        @if($status == 1)
+                            <a href = "{{action('UserController@checkout')}}"class="btn btn-danger">Checkout</a>                  
                         @else
-                             <a href = "{{action('UserController@checkout')}}"class="btn btn-danger">Checkout</a>
+                             <a href = "{{action('UserController@finish')}}"class="btn btn-danger">Checkin</a>
                         @endif
                         <a href = "{{url('/home')}}" class="btn btn-success">Home</a>
                     </div>
@@ -54,5 +54,8 @@
         </tbody>
 
     </table>
+    <div class="clearfix">
+        {{ $times->links() }}
+    </div>
 </div>
 @endsection

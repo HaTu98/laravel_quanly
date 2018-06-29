@@ -31,6 +31,7 @@
               <th>Today</th>
               <th>Total</th>
               <th>Date</th>
+              <th>Update</th>
             </tr>
         </thead>
         <tbody>
@@ -45,10 +46,16 @@
                     <td>{{$time->time_per_day}}</td>
                     <td>{{$time->all_time}}</td>
                     <td>{{$time->date}}</td>
+                    <td>
+                    <a href="" class="btn btn-primary">Edit</a>
+                </td>
                 </tr>
             @endforeach
         </tbody>
 
     </table>
+    <div class="clearfix">
+        {{ $times->links() }}
+    </div>
 </div>
 @endsection

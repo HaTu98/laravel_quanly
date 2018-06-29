@@ -24,6 +24,12 @@
                         </div>
                     @endif
 
+                    @if(\Session::has('success'))
+                        <div class="alert alert-success">
+                            {{\Session::get('success')}}
+                        </div>
+                    @endif
+                    
                     @if(session('user.role') == 1)
                         <th class="row">
                             <a href="{{ route('register') }}" class="btn btn-success">Register</a>

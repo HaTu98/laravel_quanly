@@ -51,5 +51,8 @@
         </tbody>
 
     </table>
+    <div class="clearfix">
+        {{ $times->links() }}
+    </div>
 </div>
 @endsection
