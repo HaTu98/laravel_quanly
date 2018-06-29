@@ -22,6 +22,7 @@
 
                     <div class="row">
                         <a href = "{{action('UserController@checkout')}}"class="btn btn-danger">Checkout</a>
+                         <a href = "{{url('/home')}}" class="btn btn-success">Home</a>
                     </div>
                 </div>
             </div>

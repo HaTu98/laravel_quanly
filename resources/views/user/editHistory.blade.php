@@ -13,18 +13,11 @@
                 </div>
 
                 <div class="card-body">
-
-                    @if(session('user.role') == 1)
-                        <div class="row">
-                            <a href="" class="btn btn-info">show all time</a>
-                        </div>
-                    @endif
-
                     <div class="row">
-                        <a href = "{{action('UserController@finish')}}"class="btn btn-danger">Checkin</a>
-                        <a href = "{{url('/home')}}" class="btn btn-success">Home</a>
+                        <a href = "{{url('/home')}}" class="btn btn-danger">Home</a>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

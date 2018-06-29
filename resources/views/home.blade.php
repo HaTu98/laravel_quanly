@@ -25,21 +25,21 @@
                     @endif
 
                     @if(session('user.role') == 1)
-                        <div class="row">
+                        <th class="row">
                             <a href="{{ route('register') }}" class="btn btn-success">Register</a>
-                        </div>
+                        </th>
 
-                        <div class="row">
+                        <th class="row">
                             <a href="{{url('/admin/user')}}" class="btn btn-info">show all user</a>
-                        </div>
+                        </th>
                     @endif
-                    <div class="row">
+                    <th class="row">
                         <a href="{{url('/start')}}"class="btn btn-primary">Start</a>
-                    </div>
-                    <div class="row">
+                    </th>
+                    <th class="row">
                        <a href = "{{url('/form')}}"class="btn btn-danger">Form</a>
 
-                    </div>
+                    </th>
             </div>
         </div>
     </div>

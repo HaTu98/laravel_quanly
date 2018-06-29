@@ -43,6 +43,7 @@ Route::get('/start','UserController@start');
 Route::get('/finish','UserController@finish');
 Route::get('/form','UserController@form');
 Route::get('/checkout','UserController@checkout');
+Route::get('/history/{id}','UserController@history');
 
 Route::get('/thongtin',function(){
 	$data = App\user::find(10);

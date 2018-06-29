@@ -11,6 +11,7 @@
               <th>isAdmin</th>
               <th>Update</th>
               <th>Delete</th>
+              <th>History</th>
             </tr>
         </thead>
         <tbody>
@@ -29,6 +30,9 @@
                         <input name="_method" type="hidden" value="DELETE">
                         <button class="btn btn-danger" type="submit">Delete</button>
                     </form>
+                </td>
+                <td>
+                    <a href="{{url('/history',$user->id)}}" class = "btn btn-success"> History </a>
                 </td>
             </tr>
             @endforeach

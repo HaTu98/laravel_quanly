@@ -118,4 +118,9 @@ class UserController extends Controller
 
     	return view('user.form',compact("times"));
     }
+
+    public function history($id){
+    	$times = times::where('id',$id)->get();
+    	return view('user.editHistory',compact("times"));
+    }
 }
