@@ -40,7 +40,7 @@
             @foreach($times as $time)
                 <tr>
                     <td>{{$time->id}}</td>
-                    <td>{{Auth::user()->name}}</td>
+                    <td>{{$time->name}}</td>
                     <td>{{$time->start}}</td>
                     <td>{{$time->finish}}</td>
                     <td>{{$time->time_per_day}}</td>

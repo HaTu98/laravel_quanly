@@ -56,12 +56,11 @@ class UserController extends Controller
     }
     public function start(){
 
-    	// $test = \DB::table('times')
-    	// 	->join('users','users.id','=','times.id')
-    	// 	->where('times.id','9')
-    	// 	->get();
-    	// dd($test);	
-    	$times = times::where('id',Auth::user()->id)->get();
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->get();
+
 
     	return view('user.start',compact("times"));
     }
@@ -86,7 +85,10 @@ class UserController extends Controller
     	$time->date = $date;
     	$time->status = 1;
     	$time->save();
-    	$times = times::where('id',Auth::user()->id)->get();
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->get();
     	return view('user.finish',compact("times"));
     }
 
@@ -114,13 +116,19 @@ class UserController extends Controller
     }
 
     public function  form(){
-    	$times = times::where('id',Auth::user()->id)->get();
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->get();
 
     	return view('user.form',compact("times"));
     }
 
     public function history($id){
-    	$times = times::where('id',$id)->get();
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',$id)
+    		->get();
     	return view('user.editHistory',compact("times"));
     }
 }
