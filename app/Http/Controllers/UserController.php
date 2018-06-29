@@ -54,6 +54,7 @@ class UserController extends Controller
         
         return $data;
     }
+
     public function start(){
 
     	$times = \DB::table('times')
@@ -61,9 +62,10 @@ class UserController extends Controller
     		->where('times.id',Auth::user()->id)
     		->get();
 
-
-    	return view('user.start',compact("times"));
+    	$status = times::where('id',Auth::user()->id)->orderBy('date','desc')->first()->status;
+    	return view('user.start',compact("times","status"));
     }
+
     public function finish(){
     	date_default_timezone_set("Asia/Ho_Chi_Minh");
     	$now = time();
@@ -71,11 +73,7 @@ class UserController extends Controller
     	$date = date('Y-m-d', $now);
     	//dd($start, $date);
     	$time_id = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
-    	// times::where('id',$time['id'])->insert([
-    	// 	'id'->$time['id'],
-    	// 	'start'=>$start,
-    	// 	'date'=>$date,
-    	// ]);
+
     	$time = new times();
     	$time->id = Auth::user()->id;
     	$time->start = $start;
@@ -85,10 +83,12 @@ class UserController extends Controller
     	$time->date = $date;
     	$time->status = 1;
     	$time->save();
+
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
     		->get();
+
     	return view('user.finish',compact("times"));
     }
 

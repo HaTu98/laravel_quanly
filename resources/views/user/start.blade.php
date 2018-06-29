@@ -14,7 +14,11 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <a href = "{{action('UserController@finish')}}"class="btn btn-danger">Checkin</a>
+                        @if($status == 0)
+                            <a href = "{{action('UserController@finish')}}"class="btn btn-danger">Checkin</a>
+                        @else
+                             <a href = "{{action('UserController@checkout')}}"class="btn btn-danger">Checkout</a>
+                        @endif
                         <a href = "{{url('/home')}}" class="btn btn-success">Home</a>
                     </div>
                 </div>
