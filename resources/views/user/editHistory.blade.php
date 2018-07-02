@@ -10,14 +10,7 @@
                         Time Working
                     </span>
 
-                </div>
-
-                <div class="card-body">
-                    <div class="row">
-                        <a href = "{{url('/home')}}" class="btn btn-danger">Home</a>
-                    </div>
-                </div>
-                
+                </div>                
             </div>
         </div>
     </div>
@@ -47,8 +40,12 @@
                     <td>{{$time->all_time}}</td>
                     <td>{{$time->date}}</td>
                     <td>
-                    <a href="" class="btn btn-primary">Edit</a>
-                </td>
+                        
+
+                        <a href="{{action('UserController@editTime',$time->time_id)}}" class="btn btn-primary">Edit</a>
+                        
+                        
+                    </td>
                 </tr>
             @endforeach
         </tbody>

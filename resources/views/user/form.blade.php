@@ -11,14 +11,6 @@
                     </span>
 
                 </div>
-
-                <div class="card-body">
-
-
-                    <div class="row">
-                        <a href = "{{url('/home')}}" class="btn btn-danger">Home</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

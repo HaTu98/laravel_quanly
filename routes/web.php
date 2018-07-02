@@ -34,6 +34,11 @@ Route::middleware('checkAdmin')->group(function () {
 		Route::delete('/delete/user/{id}','UserController@destroy');
 		Route::get('/edit/user/{id}','UserController@edit');
 		Route::post('/edit/user/{id}','UserController@update');
+		Route::get('/history/{id}','UserController@history');
+		Route::get('/editTime/{id}','UserController@editTime');
+		Route::post('/editTime/{id}','UserController@updateTime');
+
+
 	});
 });
 
@@ -43,7 +48,8 @@ Route::get('/start','UserController@start');
 Route::get('/finish','UserController@finish');
 Route::get('/form','UserController@form');
 Route::get('/checkout','UserController@checkout');
-Route::get('/history/{id}','UserController@history');
+
+Route::get('/confirm','UserController@confirmGetMessage');
 
 Route::get('/thongtin',function(){
 	$data = App\user::find(10);

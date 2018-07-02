@@ -32,7 +32,7 @@
                     </form>
                 </td>
                 <td>
-                    <a href="{{url('/history',$user->id)}}" class = "btn btn-success"> History </a>
+                    <a href="{{url('/admin/history',$user->id)}}" class = "btn btn-success"> History </a>
                 </td>
             </tr>
             @endforeach

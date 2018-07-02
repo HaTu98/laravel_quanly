@@ -153,4 +153,65 @@ class UserController extends Controller
     		->Paginate(7);
     	return view('user.editHistory',compact("times"));
     }
+
+    public function editTime($time_id)
+    {
+
+        $times = times::where('time_id',$time_id)->first();
+
+        return view('user.editTime', compact('times', 'time_id'));
+    }
+
+    public function updateTime(Request $request, $time_id){
+    	$time = new times();
+        $time = $this->validate($request, [
+            'start'=>'required',
+            'finish'=> 'required',
+        ]);
+
+    	$times = times::where('time_id',$time_id)->first();
+    	//dd($times['time_per_day']);
+    	$time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
+    	$time['all_time'] = $times['all_time'] - $times['time_per_day'] + $time['time_per_day'];
+
+        times::where('time_id',$time_id)->update([
+        		'start' =>$time['start'],
+    			'finish'=>$time['finish'],
+    			'time_per_day' => $time['time_per_day'],
+    			'all_time' => $time['all_time'],
+    			'status' => 2,
+    	]);
+    	$this->updateAllTime($times);
+        return redirect('/home')->with('success', 'New support times has been updated!!');
+    }
+
+    public function updateAllTime($times){
+    	$allTimes = times::where('id',$times->id)->get();
+    	$all = 0;
+    	foreach ($allTimes as $allTime) {
+    		if($allTime->date == $times->date){
+    			$all = $allTime->all_time;
+    		}
+			if($allTime->status == 2 && $allTime->date > $times->date){
+				$all = $all + $allTime->time_per_day;
+				times::where('time_id', $allTime->time_id)->update([
+					'all_time'=>$all,
+				]);
+			} 		
+    	}
+    }
+
+
+    public function confirmGetMessage() {
+  	//display a confirmation box asking the visitor if they want to get a message
+  		$theAnswer = confirm("Get a message?");
+	
+  	//if the user presses the "OK" button display the message "Javascript is cool!!"
+  		if (theAnswer){
+    		alert("Javascript is cool.");
+  		}
+		else{
+   			alert("Here is a message anyway.");
+  		}
+  	}
 }
