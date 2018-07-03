@@ -42,7 +42,9 @@ class UserController extends Controller
 
         return redirect('/home')->with('success', 'New support user has been updated!!');
     }
-
+    public function test(){
+    	
+    }
     public function updateUser($data)
     {   
         $id = $data['id'];
@@ -65,7 +67,6 @@ class UserController extends Controller
 
     	$first = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
     	$status = $first->status;
-
     	if($status == 2 && date('Y-m-d',strtotime(now())) == $first->date)
     		return redirect('/home')->with('success',"hom nay, ban da checkout roi");
     	else
@@ -103,7 +104,11 @@ class UserController extends Controller
     	$time->status = 1;
     	$time->save();
 
-    	
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->orderBy('date','desc')
+    		->Paginate(7);
 
     	return view('user.finish',compact("times"));
     }

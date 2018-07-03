@@ -15,11 +15,12 @@
                 <div class="card-body">
                     <div class="row">
                         @if($status == 1)
-                            <a href = "{{action('UserController@checkout')}}"class="btn btn-danger">Checkout</a>                  
+                            <a href = "{{action('UserController@checkout')}}" onclick="if (!confirm('Are you sure?')) { return false }"class="btn btn-danger">Checkout</a>                  
                         @else
-                             <a href = "{{action('UserController@finish')}}"  class="btn btn-danger">Checkin</a>
+                             <a href = "{{action('UserController@finish')}}" onclick="if (!confirm('Are you sure?')) { return false }"  class="btn btn-danger">Checkin</a>
                         @endif
-                        <a href = "{{url('/home')}}" class="btn btn-success">Home</a>
+                        
+
                     </div>
                 </div>
             </div>

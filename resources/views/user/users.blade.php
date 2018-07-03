@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <table class="table table-striped">
         <thead>
@@ -28,7 +29,9 @@
                     <form action="{{action('UserController@destroy', $user->id)}}" method="post">
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="DELETE">
-                        <button class="btn btn-danger" type="submit">Delete</button>
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <button class="btn btn-danger" onclick="if (!confirm('Are you sure?')) { return false }" type="submit">Delete</button>
+                        
                     </form>
                 </td>
                 <td>
