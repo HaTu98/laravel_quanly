@@ -58,14 +58,20 @@ class UserController extends Controller
     }
 
     public function start(){
-
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->Paginate(7);
 
-    	$first = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	$first = times::where('id',Auth::user()->id)->where('date',date('Y-m-d',strtotime(now())))->first();
+
+   		if($first == null) {
+   			$status = 0;
+   			return view('user.start',compact("times","status"));
+   		}
     	$status = $first->status;
     	if($status == 2 && date('Y-m-d',strtotime(now())) == $first->date)
     		return redirect('/home')->with('success',"hom nay, ban da checkout roi");
@@ -74,14 +80,18 @@ class UserController extends Controller
     }
 
     public function finish(){
-    	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
+    	
+    	$status = 0;
+    	$first = times::where('id',Auth::user()->id)
     		->where('times.id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
-    		->Paginate(7);
-
-    	$first = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
-    	$status = $first->status;
+    		->first();
+    	if($first != null){
+    		$status = $first->status;
+    	}
+    	
 
     	if($status == 1 && date('Y-m-d',strtotime(now())) == date('Y-m-d',strtotime($first->start))){
     		return view('user.finish',compact("times"));
@@ -92,14 +102,21 @@ class UserController extends Controller
     	$start = date("H:i:s",$now);
     	$date = date('Y-m-d', $now);
     	//dd($start, $date);
-    	$time_id = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	$time_id = times::where('id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
+    		->orderBy('date','desc')
+    		->first();
 
     	$time = new times();
     	$time->id = Auth::user()->id;
     	$time->start = $start;
     	$time->finish = 0;
     	$time->time_per_day = 0;
-    	$time->all_time = $time_id->all_time;
+    	if($time_id != null)
+    		$time->all_time = $time_id->all_time;
+    	else 
+    		$time->all_time = 0;
     	$time->date = $date;
     	$time->status = 1;
     	$time->save();
@@ -107,6 +124,8 @@ class UserController extends Controller
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->Paginate(7);
 
@@ -134,6 +153,8 @@ class UserController extends Controller
     	$times = $times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->Paginate(7);
 
@@ -144,6 +165,8 @@ class UserController extends Controller
     	$times = \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->Paginate(7);
 
@@ -174,7 +197,10 @@ class UserController extends Controller
             'finish'=> 'required',
         ]);
 
-    	$times = times::where('time_id',$time_id)->first();
+    	$times = times::where('time_id',$time_id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
+    		->first();
     	//dd($times['time_per_day']);
     	$time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
     	$time['all_time'] = $times['all_time'] - $times['time_per_day'] + $time['time_per_day'];
@@ -191,7 +217,10 @@ class UserController extends Controller
     }
 
     public function updateAllTime($times){
-    	$allTimes = times::where('id',$times->id)->get();
+    	$allTimes = times::where('id',$times->id)
+    	->whereYear('date',date('Y',strtotime(now())))
+    	->whereMonth('date',date('m',strtotime(now())))
+    	->get();
     	$all = 0;
     	foreach ($allTimes as $allTime) {
     		if($allTime->date == $times->date){
@@ -206,17 +235,4 @@ class UserController extends Controller
     	}
     }
 
-
-    public function confirmGetMessage() {
-  	//display a confirmation box asking the visitor if they want to get a message
-  		$theAnswer = confirm("Get a message?");
-	
-  	//if the user presses the "OK" button display the message "Javascript is cool!!"
-  		if (theAnswer){
-    		alert("Javascript is cool.");
-  		}
-		else{
-   			alert("Here is a message anyway.");
-  		}
-  	}
 }
