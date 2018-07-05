@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Mail\Mailable;
 use Illuminate\Http\Request;
 use App\User;
 use App\times;
+use App\Mail\MailTrap;
+use Mail;
 
 class UserController extends Controller
 {
@@ -67,7 +69,7 @@ class UserController extends Controller
     		->Paginate(7);
 
     	$first = times::where('id',Auth::user()->id)->where('date',date('Y-m-d',strtotime(now())))->first();
-
+    	$leave = 0;
    		if($first == null) {
    			$status = 0;
    			return view('user.start',compact("times","status"));
@@ -79,8 +81,8 @@ class UserController extends Controller
     		return view('user.start',compact("times","status"));
     }
 
-    public function finish(){
-    	
+
+    public function finish(){ 
     	$status = 0;
     	$first = times::where('id',Auth::user()->id)
     		->where('times.id',Auth::user()->id)
@@ -233,6 +235,11 @@ class UserController extends Controller
 				]);
 			} 		
     	}
+    }
+
+    public function mail(){
+
+    	Mail::to('hatu98nd@gmail.com')->send(new MailTrap());
     }
 
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class changeTime extends Migration
+class Profile extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class changeTime extends Migration
      */
     public function up()
     {
-        Schema::table('times', function (Blueprint $table) {
-            $table->integer('status');
+        Schema::create('profiles',function(Blueprint $table){
+            $table->integer('users_id');
+            $table->string('firstName');
+            $table->string('lastName');
+            $table->date('DoB');
+            $table->string('position');
         });
     }
 
@@ -25,6 +29,6 @@ class changeTime extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('profiles');
     }
 }

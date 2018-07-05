@@ -77,3 +77,4 @@ Route::get('/check',function(){
 		echo "hi".$t2.$t;
 	}
 });
+Route::get('/send','UserController@mail');
