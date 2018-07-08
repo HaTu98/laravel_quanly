@@ -8,6 +8,9 @@ use App\User;
 use App\times;
 use App\Mail\MailTrap;
 use Mail;
+use App\Product;
+use Excel;
+use App\Exports\ExcelExports;
 
 class UserController extends Controller
 {
@@ -237,9 +240,19 @@ class UserController extends Controller
     	}
     }
 
-    public function mail(){
+    public function print(){
+    	$times = \DB::table('times')
+    		->join('users','users.id','=','times.id')
+    		->where('times.id',Auth::user()->id)
+    		->whereYear('date',date('Y',strtotime(now())))
+    		->whereMonth('date',date('m',strtotime(now())))
+    		->select('users.id','name','start','finish','time_per_day','all_time','date')
+    		->orderBy('date','desc')->get();
 
-    	Mail::to('hatu98nd@gmail.com')->send(new MailTrap());
+    	return Excel::download(new ExcelExports, 'invoices.xlsx');
     }
+
+    
+    
 
 }

@@ -28,7 +28,7 @@
             <input type="text" class="form-control" name="isAdmin" value={{$user->isAdmin}} />
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
-        </form>
+    </form>
     </div>
 </div>
 @endsection

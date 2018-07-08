@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -40,9 +42,13 @@
                     <td>{{$time->date}}</td>
                 </tr>
             @endforeach
+
         </tbody>
 
     </table>
+    <div>
+        <a href = "{{action('UserController@print')}}" onclick="if (!confirm('Download file?')) { return false }" class="btn btn-success">print</a>
+    </div>
     <div class="clearfix">
         {{ $times->links() }}
     </div>

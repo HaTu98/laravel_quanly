@@ -78,3 +78,9 @@ Route::get('/check',function(){
 	}
 });
 Route::get('/send','UserController@mail');
+Route::get('/print','UserController@print');
+Route::get('/profile', 'ProfileController@profile');
+Route::get('/editProfile','ProfileController@editProfile');
+Route::post('/editProfile','ProfileController@updateProfile');
+
+Route::get('/them','ProfileController@them');
