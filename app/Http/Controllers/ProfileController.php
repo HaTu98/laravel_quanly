@@ -20,13 +20,27 @@ class ProfileController extends Controller
 
     	$profile = Profiles::join('users','users.id','=','profiles.user_id')
     	->where('profiles.user_id', Auth::User()->id)->first();
+    	if($profile == null){
+    		$newProfile = new Profiles();
+    		$newProfile->user_id = Auth::User()->id;
+    		$newProfile->first_name = " ";
+    		$newProfile->last_name = " ";
+    		$newProfile->date_of_birth = null;
+    		$newProfile->gender = " ";
+    		$newProfile->position = " ";
+    		$newProfile->home_address = " ";
+    		$newProfile->phone_number = " ";
+    		$newProfile->save();
+    		return view('profile.profile',compact('newProfile'));
+    	}
     	return view('profile.profile',compact('profile'));
     }
 
     public function editProfile(){
     	$profile = Profiles::join('users','users.id','=','profiles.user_id')
     	->where('profiles.user_id', Auth::User()->id)->first();
-    	//dd($profile->position);
+    	
+    	
     	return view('profile.editProfile',compact('profile'));
     }
 
@@ -62,6 +76,20 @@ class ProfileController extends Controller
     		'email'=>$user['email'],
     	]);
 
+    	return redirect('/profile');
+    }
+    public  function upimg(Request $request){
+
+    	if($request->hasFile('img')){
+ 
+    		$request->file('img')->move('img','10.jpg');
+    	
+    		
+    	} 
+    	else{
+    		echo "ko";
+    		dd("ko");
+    	}
     	return redirect('/profile');
     }
 

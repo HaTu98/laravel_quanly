@@ -25,7 +25,9 @@
             </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic"  src="http://i.9mobi.vn/cf/images/2015/03/nkk/nhung-hinh-anh-dep-4.jpg" width="100" height="70" class="img-circle img-responsive"> </div>
+                <div class="col-md-3 col-lg-3 " align="center"> 
+                	<img alt="User Pic"  src="img/{{$profile->user_id}}.jpg" width="100" height="70" class="img-circle img-responsive"> 
+                </div>
 
                 <div class=" col-md-9 col-lg-9 "> 
                   <table class="table table-user-information">

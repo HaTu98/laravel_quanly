@@ -18,15 +18,24 @@
 <p class=" text-info"> </p>
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
     <div class="panel panel-info">
-      <form method="post" action="{{action('ProfileController@updateProfile')}}">
-         {{csrf_field()}}
+      
         <div class="panel-heading">
           <h3 class="panel-title">{{$profile->first_name}} {{$profile->last_name}}</h3>
         </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic"  src="http://i.9mobi.vn/cf/images/2015/03/nkk/nhung-hinh-anh-dep-4.jpg" width="100" height="70" class="img-circle img-responsive"> </div>
-                <div class=" col-md-9 col-lg-9 "> 
+                <div class="col-md-9 col-lg-9 " align="center"> 
+                  <img alt="User Pic"  src="img/{{$profile->user_id}}.jpg" width="100" height="70" class="img-circle img-responsive"> 
+                  <form action="{{route("upimg")}}" method="post" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                    <input type="file" name="img" id = "img">
+                    <input type="submit">
+                  </form>
+                  
+                </div>
+                <form method="post" action="{{action('ProfileController@updateProfile')}}">
+                  {{csrf_field()}}
+                <div class=" col-md-20 col-lg-20 " > 
                   
                   <table class="table table-user-information">
                     <tbody>
@@ -84,9 +93,10 @@
                   </table>
               <button type="submit" class="btn btn-primary">Update</button>
             </div>
+            </form>
           </div>
         </div>
-      </form>
+      
     </div>
   </div>
 </div>
