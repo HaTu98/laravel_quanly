@@ -17,14 +17,17 @@
     <table class="table table-striped">
         <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Start</th>
-              <th>Finish</th>
-              <th>Today</th>
-              <th>Total</th>
-              <th>Date</th>
-              <th>Update</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Start</th>
+                <th>Finish</th>
+                <th>Today</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Update</th>
+                <th>Delete</th>
+                <th> Insert
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -40,11 +43,19 @@
                     <td>{{$time->all_time}}</td>
                     <td>{{$time->date}}</td>
                     <td>
-                        
-
                         <a href="{{action('UserController@editTime',$time->time_id)}}" class="btn btn-primary">Edit</a>
-                        
-                        
+                    </td>
+                    <td>
+                    <form action="{{action('UserController@deleteTime', $time->time_id)}}" method="post">
+                        {{csrf_field()}}
+                        <input name="_method" type="hidden" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}" />
+                        <button class="btn btn-danger" onclick="if (!confirm('Are you sure?')) { return false }" type="submit">Delete</button>           
+                    </form>
+                    </td>
+                    <td>
+                        <a href="{{action('UserController@insertTime', $time->time_id)}}"
+                            class="btn btn-primary" > Insert </a>
                     </td>
                 </tr>
             @endforeach

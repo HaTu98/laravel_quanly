@@ -13,6 +13,7 @@
               <th>Update</th>
               <th>Delete</th>
               <th>History</th>
+              <th>Detail</th>
             </tr>
         </thead>
         <tbody>
@@ -30,12 +31,14 @@
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
-                        <button class="btn btn-danger" onclick="if (!confirm('Are you sure?')) { return false }" type="submit">Delete</button>
-                        
+                        <button class="btn btn-danger" onclick="if (!confirm('Are you sure?')) { return false }" type="submit">Delete</button>           
                     </form>
                 </td>
                 <td>
                     <a href="{{url('/admin/history',$user->id)}}" class = "btn btn-success"> History </a>
+                </td>
+                 <td>
+                    <a href="{{url('/profile', $user->id)}}" class = "btn btn-primary"> Detail </a>
                 </td>
             </tr>
             @endforeach

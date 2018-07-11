@@ -11,6 +11,7 @@ use Mail;
 use App\Product;
 use Excel;
 use App\Exports\ExcelExports;
+use App\http\Controllers\ActionController;
 
 class UserController extends Controller
 {
@@ -24,10 +25,23 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
+
+
+        app('App\http\Controllers\ProfileController')->deleteProfile($id);
         $user->delete();
-        return back();
+
+        $userAfter = User::find($id);
+        if($userAfter == null){      
+            
+             app('App\http\Controllers\ActionController')->deleteUserLog($user,$id);
+             return redirect('/home')->with('success', 'user has been deleted!!');
+        }else{
+            return redirect('/home')->with('success', 'You do not change anything!!');
+        }
+        //return back();
         // return redirect('/home')->with('success', 'user has been deleted!!');
     }
+
     public function edit($id)
     {
         $user = User::get()->where('id',$id)->first();
@@ -43,13 +57,24 @@ class UserController extends Controller
             'isAdmin'=> 'required'
         ]);
         $data['id'] = $id;
+        $userBefore = User::where('id', $id)->first();
+        
         $this->updateUser($data);
 
-        return redirect('/home')->with('success', 'New support user has been updated!!');
+        $userAfter = User::where('id',$id)->first();
+
+        if($userBefore->start != $userAfter->start || $userBefore->finish != $userAfter->finish ||
+            $userBefore->isAdmin != $userAfter->isAdmin){
+            app('App\http\Controllers\ActionController')->updateUserLog($userBefore,$userAfter,$id);
+
+            return redirect('/home')->with('success', 'New support user has been updated!!');
+        } else{
+            return redirect('/home')->with('success', 'You do not change anything!!');
+        }
+
+        
     }
-    public function test(){
-    	
-    }
+   
     public function updateUser($data)
     {   
         $id = $data['id'];
@@ -155,7 +180,7 @@ class UserController extends Controller
     		//
     	}
     	
-    	$times = $times = \DB::table('times')
+    	$times =  \DB::table('times')
     		->join('users','users.id','=','times.id')
     		->where('times.id',Auth::user()->id)
     		->whereYear('date',date('Y',strtotime(now())))
@@ -196,6 +221,7 @@ class UserController extends Controller
     }
 
     public function updateTime(Request $request, $time_id){
+        
     	$time = new times();
         $time = $this->validate($request, [
             'start'=>'required',
@@ -206,6 +232,8 @@ class UserController extends Controller
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->first();
+        $timeBefore = times::where('time_id',$time_id)->first();
+
     	//dd($times['time_per_day']);
     	$time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
     	$time['all_time'] = $times['all_time'] - $times['time_per_day'] + $time['time_per_day'];
@@ -217,9 +245,19 @@ class UserController extends Controller
     			'all_time' => $time['all_time'],
     			'status' => 2,
     	]);
+
     	$this->updateAllTime($times);
-        return redirect('/home')->with('success', 'New support times has been updated!!');
+
+        $timeAfter =  times::where('time_id',$time_id)->first();
+
+        if($timeBefore->start != $timeAfter->start || $timeBefore->finish != $timeAfter->finish){
+            app('App\http\Controllers\ActionController')->updateTimeLog($timesBefore,$timesAfter,$time_id);
+            return redirect('/home')->with('success', 'New support times has been updated!!');
+        } else{
+            return redirect('/home')->with('success', 'You do not change anything!!');
+        }
     }
+
 
     public function updateAllTime($times){
     	$allTimes = times::where('id',$times->id)
@@ -238,6 +276,13 @@ class UserController extends Controller
 				]);
 			} 		
     	}
+    }
+
+    public function deleteTime($time_id){
+        $timeBefore = times::where('time_id', $time_id)->first();
+        $time = times::where('time_id',$time_id)->delete();
+        app('App\http\Controllers\ActionController')->deleteTimeLog($timeBefore,$time_id);
+        return redirect('/home')->with('success', 'has been deleted!!');
     }
 
     public function print(){

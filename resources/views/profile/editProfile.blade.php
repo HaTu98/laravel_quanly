@@ -24,17 +24,14 @@
         </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-9 col-lg-9 " align="center"> 
-                  <img alt="User Pic"  src="img/{{$profile->user_id}}.jpg" width="100" height="70" class="img-circle img-responsive"> 
-                  <form action="{{route("upimg")}}" method="post" enctype="multipart/form-data">
-                        {{csrf_field()}}
-                    <input type="file" name="img" id = "img">
-                    <input type="submit">
-                  </form>
-                  
-                </div>
-                <form method="post" action="{{action('ProfileController@updateProfile')}}">
+                <form method="post" action="{{action('ProfileController@updateProfile', $profile->user_id)}}" enctype="multipart/form-data"> 
                   {{csrf_field()}}
+                <div class="col-md-9 col-lg-9 " align="center"> 
+                  <img alt="User Pic"   src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="70" class="img-circle img-responsive"> 
+                    <input type="file" name="img" id = "img">
+                </div>
+                
+                  
                 <div class=" col-md-20 col-lg-20 " > 
                   
                   <table class="table table-user-information">
@@ -96,7 +93,6 @@
             </form>
           </div>
         </div>
-      
     </div>
   </div>
 </div>

@@ -19,15 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-
-Route::get('/all',function(){
-	$user = App\User::all();
-	if(session('user.role') == 1){
-		dd(session('user.role'));
-	}
-});
-
 Route::middleware('checkAdmin')->group(function () {
 	Route::prefix('admin')->group(function () {
 		Route::get('user','UserController@user');
@@ -37,6 +28,9 @@ Route::middleware('checkAdmin')->group(function () {
 		Route::get('/history/{id}','UserController@history');
 		Route::get('/editTime/{id}','UserController@editTime');
 		Route::post('/editTime/{id}','UserController@updateTime');
+		Route::delete('/delete/times/{id}','UserController@deleteTime');
+		Route::get('/insertTime/{id}','UserController@insertTime');
+		//Route::get('/profile/{id}', 'ProfileController@profile');
 
 
 	});
@@ -48,23 +42,25 @@ Route::get('/start','UserController@start');
 Route::get('/finish','UserController@finish');
 Route::get('/form','UserController@form');
 Route::get('/checkout','UserController@checkout');
-Route::get('/test','UserController@test');
 
-Route::get('/thongtin',function(){
-	$data = App\user::find(10);
+Route::get('/send','UserController@mail');
+Route::get('/print','UserController@print');
+Route::get('/profile/{id}',['as'=>'profile','uses'=> 'ProfileController@profile']);
+Route::get('/editProfile/{id}','ProfileController@editProfile');
+Route::post('/editProfile/{id}','ProfileController@updateProfile');
 
-	foreach ($data->lienket()->where('id',10) as $data1) {
-    echo $data1;
-	}
-});
 
-Route::get('/time',function(){
-	
-	$t=time();
-	echo("<br>".$t . "<br>");
-	echo(date("h:i:sa",$t));
-	
-});
+Route::get('/action', 'ActionController@action');
+
+
+
+
+
+
+// route test 
+//Route::post('/upimg',['as'=>'upimg', 'uses'=>'ProfileController@upimg']);
+
+Route::get('/them','ProfileController@them');
 Route::get('/check',function(){
 	$t1 = now();
 	$t = date('y-m-d',strtotime($t1));
@@ -77,11 +73,19 @@ Route::get('/check',function(){
 		echo "hi".$t2.$t;
 	}
 });
-Route::get('/send','UserController@mail');
-Route::get('/print','UserController@print');
-Route::get('/profile', 'ProfileController@profile');
-Route::get('/editProfile','ProfileController@editProfile');
-Route::post('/editProfile','ProfileController@updateProfile');
-Route::post('/upimg',['as'=>'upimg', 'uses'=>'ProfileController@upimg']);
+Route::get('/thongtin',function(){
+	$data = App\user::find(10);
 
-Route::get('/them','ProfileController@them');
+	foreach ($data->lienket()->where('id',10) as $data1) {
+    echo $data1;
+	}
+});
+Route::get('/test','UserController@test');
+
+
+Route::get('/all',function(){
+	$user = App\User::all();
+	if(session('user.role') == 1){
+		dd(session('user.role'));
+	}
+});
