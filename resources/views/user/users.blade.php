@@ -19,15 +19,15 @@
         <tbody>
             @foreach($users as $user)
             <tr>
-                <td>{{$user->id}}</td>
+                <td>{{$user->user_id}}</td>
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->isAdmin}}</td>
                 <td>
-                    <a href="{{action('UserController@edit',$user->id)}}" class="btn btn-primary">Edit</a>
+                    <a href="{{action('UserController@edit',$user->user_id)}}" class="btn btn-primary">Edit</a>
                 </td>
                 <td>
-                    <form action="{{action('UserController@destroy', $user->id)}}" method="post">
+                    <form action="{{action('UserController@destroy', $user->user_id)}}" method="post">
                         {{csrf_field()}}
                         <input name="_method" type="hidden" value="DELETE">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -35,10 +35,10 @@
                     </form>
                 </td>
                 <td>
-                    <a href="{{url('/admin/history',$user->id)}}" class = "btn btn-success"> History </a>
+                    <a href="{{url('/admin/history',$user->user_id)}}" class = "btn btn-success"> History </a>
                 </td>
                  <td>
-                    <a href="{{url('/profile', $user->id)}}" class = "btn btn-primary"> Detail </a>
+                    <a href="{{url('/profile', $user->user_id)}}" class = "btn btn-primary"> Detail </a>
                 </td>
             </tr>
             @endforeach

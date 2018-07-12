@@ -17,13 +17,13 @@ use App\Http\Controller\ActionController;
 
 class ProfileController extends Controller
 {
-    public function profile($id){
+    public function profile($user_id){
     	
-    	$check = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    	$check = Profiles::join('users','users.user_id','=','profiles.user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	if($check == null){
     		$newProfile = new Profiles();
-    		$newProfile->user_id = $id;
+    		$newProfile->user_id = $user_id;
     		$newProfile->first_name = " ";
     		$newProfile->last_name = " ";
     		$newProfile->date_of_birth = date('Y-m-d',strtotime(now()));
@@ -35,32 +35,32 @@ class ProfileController extends Controller
     		//return view('profile.profile',compact('newProfile'));
     	}
 
-    	if($id == Auth::User()->id){
-    		$profile = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    	if($user_id == Auth::User()->user_id){
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	}else if(Auth::User()->isAdmin == 1){
-    		$profile = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	}else{
-    		$id = Auth::User()->id;
-    		$profile = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    		$user_id = Auth::User()->user_id;
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	}
 
     	return view('profile.profile',compact('profile'));
     }
 
-    public function editProfile($id){
-    	if($id == Auth::User()->id){
-    		$profile = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    public function editProfile($user_id){
+    	if($user_id == Auth::User()->user_id){
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	}else if(Auth::User()->isAdmin == 1){
-    		$profile = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	}else{
-    		$id = Auth::User()->id;
-    		$profile = Profiles::join('users','users.id','=','profiles.user_id')
-    		->where('profiles.user_id', $id)->first();
+    		$user_id = Auth::User()->user_id;
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+    		->where('profiles.user_id', $user_id)->first();
     	}
     	   	
     	return view('profile.editProfile',compact('profile'));
@@ -85,7 +85,7 @@ class ProfileController extends Controller
     		'email'=>'required',
     	]);
 
-        $profileBefore = Profiles::join('users','users.id','=','profiles.user_id')
+        $profileBefore = Profiles::join('users','users.user_id','=','profiles.user_id')
             ->where('profiles.user_id', $user_id)->first();
 
     	profiles::where('user_id',$user_id)->update([
@@ -98,7 +98,7 @@ class ProfileController extends Controller
     		'phone_number'=>$profile['phone_number'],
     	]);
 
-    	User::where('id',$user_id)->update([
+    	User::where('user_id',$user_id)->update([
     		'email'=>$user['email'],
     	]);
     	
@@ -107,7 +107,7 @@ class ProfileController extends Controller
     	} 
     	
         
-        $profileAfter = Profiles::join('users','users.id','=','profiles.user_id')
+        $profileAfter = Profiles::join('users','users.user_id','=','profiles.user_id')
             ->where('profiles.user_id', $user_id)->first();
 
         if($profileBefore->first_name != $profileAfter->first_name ||

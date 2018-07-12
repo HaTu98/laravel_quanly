@@ -29,7 +29,9 @@ Route::middleware('checkAdmin')->group(function () {
 		Route::get('/editTime/{id}','UserController@editTime');
 		Route::post('/editTime/{id}','UserController@updateTime');
 		Route::delete('/delete/times/{id}','UserController@deleteTime');
-		Route::get('/insertTime/{id}','UserController@insertTime');
+		Route::get('/insert/{id}','UserController@insert');
+		Route::post('/insert/{id}','UserController@insertTime');
+
 		//Route::get('/profile/{id}', 'ProfileController@profile');
 
 

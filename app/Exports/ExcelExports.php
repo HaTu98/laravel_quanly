@@ -11,11 +11,11 @@ class ExcelExports implements FromCollection
 {
     public function collection()
     {	
-    	$data =times::join('users','users.id','=','times.id')
-    		->where('times.id',\Auth::user()->id)
+    	$data =times::join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',\Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
-    		->select('users.id','name','start','finish','time_per_day','all_time','date')
+    		->select('users.user_id','name','start','finish','time_per_day','all_time','date')
     		->orderBy('date','desc')->get();
 
         return $data;

@@ -11,4 +11,6 @@ class times extends Model
          'start', 'finish',
     ];
     public $timestamps = false;
+    protected $primaryKey = 'time_id';
+
 }

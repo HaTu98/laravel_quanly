@@ -12,4 +12,5 @@ class Profiles extends Model
          'home_address','phone_number',
     ];
     public $timestamps = false;
+    protected $primaryKey = 'user_id';
 }

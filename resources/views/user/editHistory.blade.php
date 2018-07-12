@@ -26,8 +26,11 @@
                 <th>Date</th>
                 <th>Update</th>
                 <th>Delete</th>
-                <th> Insert
-                </th>
+                <td>
+                    <a href="{{action('UserController@insert', $user_id)}}"
+                            class="btn btn-primary" > Insert </a>
+                </td>
+
             </tr>
         </thead>
         <tbody>
@@ -35,7 +38,8 @@
 
             @foreach($times as $time)
                 <tr>
-                    <td>{{$time->id}}</td>
+
+                    <td>{{$time->user_id}}</td>
                     <td>{{$time->name}}</td>
                     <td>{{$time->start}}</td>
                     <td>{{$time->finish}}</td>
@@ -53,10 +57,7 @@
                         <button class="btn btn-danger" onclick="if (!confirm('Are you sure?')) { return false }" type="submit">Delete</button>           
                     </form>
                     </td>
-                    <td>
-                        <a href="{{action('UserController@insertTime', $time->time_id)}}"
-                            class="btn btn-primary" > Insert </a>
-                    </td>
+                    
                 </tr>
             @endforeach
         </tbody>

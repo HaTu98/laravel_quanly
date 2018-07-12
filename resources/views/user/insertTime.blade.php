@@ -14,25 +14,27 @@
     </div><br />
 @endif
     <div class="row">
-    <form method="post" action="{{action('UserController@updateTime', $time_id)}}" >
+    <form method="post" action="{{action('UserController@insertTime', $user_id)}}" >
         {{csrf_field()}}
         <div class="form-group">
-            <label for="name">ID: {{$times->user_id}}</label>
+            <label for="name">ID: {{$user_id}} </label>
+
             
         </div>
         <div class="form-group">
             <label for="name">Start: </label>
-            <input type="text" class="form-control" name="start" value={{$times->start}} />
+            <input type="text" class="form-control" name="start"/>
         </div>
         <div class="form-group">
             <label for="email">Finish: </label>
-            <input type="text" class="form-control" name="finish" value={{$times->finish}} />
+            <input type="text" class="form-control" name="finish" />
         </div>
         <div class="form-group">
-            <label for="name">Date: {{$times->date}} </label>
+        	<label for="email">Date: </label>
+            <input type="text" class="form-control" name="date" />
         </div>
-        <button type="submit" class="btn btn-primary">Update</button>
-        </form>
+        <button type="submit" class="btn btn-primary">Insert</button>
+    </form>
     </div>
 </div>
 @endsection

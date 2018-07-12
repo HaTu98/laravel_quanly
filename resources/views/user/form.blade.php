@@ -33,7 +33,7 @@
 
             @foreach($times as $time)
                 <tr>
-                    <td>{{$time->id}}</td>
+                    <td>{{$time->user_id}}</td>
                     <td>{{$time->name}}</td>
                     <td>{{$time->start}}</td>
                     <td>{{$time->finish}}</td>

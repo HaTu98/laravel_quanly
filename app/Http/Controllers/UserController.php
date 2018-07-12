@@ -22,18 +22,18 @@ class UserController extends Controller
         return view('user.users',compact('users'));
     }
 
-    public function destroy($id)
+    public function destroy($user_id)
     {
-        $user = User::find($id);
+        $user = User::find($user_id);
 
 
-        app('App\http\Controllers\ProfileController')->deleteProfile($id);
+        app('App\http\Controllers\ProfileController')->deleteProfile($user_id);
         $user->delete();
 
-        $userAfter = User::find($id);
+        $userAfter = User::find($user_id);
         if($userAfter == null){      
             
-             app('App\http\Controllers\ActionController')->deleteUserLog($user,$id);
+             app('App\http\Controllers\ActionController')->deleteUserLog($user,$user_id);
              return redirect('/home')->with('success', 'user has been deleted!!');
         }else{
             return redirect('/home')->with('success', 'You do not change anything!!');
@@ -42,13 +42,13 @@ class UserController extends Controller
         // return redirect('/home')->with('success', 'user has been deleted!!');
     }
 
-    public function edit($id)
+    public function edit($user_id)
     {
-        $user = User::get()->where('id',$id)->first();
-        return view('user.edit', compact('user', 'id'));
+        $user = User::get()->where('user_id',$user_id)->first();
+        return view('user.edit', compact('user', 'user_id'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $user_id)
     {   
         $user = new User();
         $data = $this->validate($request, [
@@ -56,12 +56,12 @@ class UserController extends Controller
             'email'=> 'required',
             'isAdmin'=> 'required'
         ]);
-        $data['id'] = $id;
-        $userBefore = User::where('id', $id)->first();
+        $data['user_id'] = $user_id;
+        $userBefore = User::where('user_id', $user_id)->first();
         
         $this->updateUser($data);
 
-        $userAfter = User::where('id',$id)->first();
+        $userAfter = User::where('user_id',$user_id)->first();
 
         if($userBefore->start != $userAfter->start || $userBefore->finish != $userAfter->finish ||
             $userBefore->isAdmin != $userAfter->isAdmin){
@@ -77,8 +77,8 @@ class UserController extends Controller
    
     public function updateUser($data)
     {   
-        $id = $data['id'];
-        User::where('id',$id)->update([
+        $user_id = $data['user_id'];
+        User::where('user_id',$user_id)->update([
             'name'=>$data['name'],
             'email'=>$data['email'],
             'isAdmin'=>$data['isAdmin'],
@@ -89,14 +89,14 @@ class UserController extends Controller
 
     public function start(){
     	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',Auth::user()->id)
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->Paginate(7);
 
-    	$first = times::where('id',Auth::user()->id)->where('date',date('Y-m-d',strtotime(now())))->first();
+    	$first = times::where('user_id',Auth::user()->user_id)->where('date',date('Y-m-d',strtotime(now())))->first();
     	$leave = 0;
    		if($first == null) {
    			$status = 0;
@@ -112,8 +112,8 @@ class UserController extends Controller
 
     public function finish(){ 
     	$status = 0;
-    	$first = times::where('id',Auth::user()->id)
-    		->where('times.id',Auth::user()->id)
+    	$first = times::where('user_id',Auth::user()->user_id)
+    		->where('times.user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
@@ -132,14 +132,14 @@ class UserController extends Controller
     	$start = date("H:i:s",$now);
     	$date = date('Y-m-d', $now);
     	//dd($start, $date);
-    	$time_id = times::where('id',Auth::user()->id)
+    	$time_id = times::where('user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->first();
 
     	$time = new times();
-    	$time->id = Auth::user()->id;
+    	$time->user_id = Auth::user()->user_id;
     	$time->start = $start;
     	$time->finish = 0;
     	$time->time_per_day = 0;
@@ -152,8 +152,8 @@ class UserController extends Controller
     	$time->save();
 
     	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',Auth::user()->id)
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
@@ -166,7 +166,7 @@ class UserController extends Controller
     	date_default_timezone_set("Asia/Ho_Chi_Minh");
     	$now = time();
     	$finish = date("H:i:s",$now);
-    	$time_id = times::where('id',Auth::user()->id)->orderBy('date','desc')->first();
+    	$time_id = times::where('user_id',Auth::user()->user_id)->orderBy('date','desc')->first();
     	$today = ($now - strtotime($time_id->start))/3600;
     	if($time_id->status == 1){
     		$status = 2;
@@ -181,8 +181,8 @@ class UserController extends Controller
     	}
     	
     	$times =  \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',Auth::user()->id)
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
@@ -193,8 +193,8 @@ class UserController extends Controller
 
     public function  form(){
     	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',Auth::user()->id)
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
@@ -203,13 +203,14 @@ class UserController extends Controller
     	return view('user.form',compact("times"));
     }
 
-    public function history($id){
+    public function history($user_id){
     	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',$id)
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',$user_id)
     		->orderBy('date','desc')
     		->Paginate(7);
-    	return view('user.editHistory',compact("times"));
+
+    	return view('user.editHistory',compact("times","user_id"));
     }
 
     public function editTime($time_id)
@@ -251,7 +252,7 @@ class UserController extends Controller
         $timeAfter =  times::where('time_id',$time_id)->first();
 
         if($timeBefore->start != $timeAfter->start || $timeBefore->finish != $timeAfter->finish){
-            app('App\http\Controllers\ActionController')->updateTimeLog($timesBefore,$timesAfter,$time_id);
+            app('App\http\Controllers\ActionController')->updateTimeLog($timeBefore,$timeAfter,$time_id);
             return redirect('/home')->with('success', 'New support times has been updated!!');
         } else{
             return redirect('/home')->with('success', 'You do not change anything!!');
@@ -259,18 +260,20 @@ class UserController extends Controller
     }
 
 
+
     public function updateAllTime($times){
-    	$allTimes = times::where('id',$times->id)
+    	$allTimes = times::where('user_id',$times->user_id)
     	->whereYear('date',date('Y',strtotime(now())))
     	->whereMonth('date',date('m',strtotime(now())))
+        ->orderBy('date','asc')
     	->get();
     	$all = 0;
+        //dd($allTimes);
     	foreach ($allTimes as $allTime) {
-    		if($allTime->date == $times->date){
-    			$all = $allTime->all_time;
-    		}
-			if($allTime->status == 2 && $allTime->date > $times->date){
+    		
+			if($allTime->status == 2 ){
 				$all = $all + $allTime->time_per_day;
+
 				times::where('time_id', $allTime->time_id)->update([
 					'all_time'=>$all,
 				]);
@@ -278,25 +281,70 @@ class UserController extends Controller
     	}
     }
 
+
+
     public function deleteTime($time_id){
         $timeBefore = times::where('time_id', $time_id)->first();
         $time = times::where('time_id',$time_id)->delete();
+        $this->updateAllTime($timeBefore);
         app('App\http\Controllers\ActionController')->deleteTimeLog($timeBefore,$time_id);
         return redirect('/home')->with('success', 'has been deleted!!');
     }
 
+    public function insert($user_id){
+
+        return view('user.insertTime', compact('user_id'));
+    }
+
+    public function insertTime(Request $request,$user_id){
+
+
+        $time = new times();
+        $time = $this->validate($request, [
+            'start'=>'required',
+            'finish'=>'required',
+            'date' => 'required',
+        ]);
+        $time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
+        $time['all_time'] = $time['time_per_day'];
+        //dd($time['date']);
+        $check = times::where('user_id', $user_id)
+        ->where('date', $time['date'])->first();
+        if($check == null){
+            $insert = new times();
+            $insert->user_id = $user_id;
+            $insert->start = $time['start'];
+            $insert->finish = $time['finish'];
+            $insert->date = $time['date'];
+            $insert->time_per_day = $time['time_per_day'];
+            $insert->all_time = $time['all_time'];
+            $insert->status = 2;
+           
+            $insert->save();
+            $this->updateAllTime($insert);
+
+            app('App\http\Controllers\ActionController')->insertTimeLog($insert,$insert->time_id);
+            return redirect('/home')->with('success', 'New times has been inserted!!');
+        }else {
+            return redirect('/home')->with('success','Date : ' . $time['date'] . ' already exists !!');
+        }
+    }
+
     public function print(){
     	$times = \DB::table('times')
-    		->join('users','users.id','=','times.id')
-    		->where('times.id',Auth::user()->id)
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',Auth::user()->user_id)
     		->whereYear('date',date('Y',strtotime(now())))
     		->whereMonth('date',date('m',strtotime(now())))
-    		->select('users.id','name','start','finish','time_per_day','all_time','date')
+    		->select('users.user_id','name','start','finish','time_per_day','all_time','date')
     		->orderBy('date','desc')->get();
 
     	return Excel::download(new ExcelExports, 'invoices.xlsx');
     }
 
+    public function insertAllTime(){
+
+    }
     
     
 

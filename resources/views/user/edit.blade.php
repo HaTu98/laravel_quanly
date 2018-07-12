@@ -12,7 +12,7 @@
     </div><br />
 @endif
     <div class="row">
-    <form method="post" action="{{action('UserController@update', $id)}}" >
+    <form method="post" action="{{action('UserController@update', $user_id)}}" >
         {{csrf_field()}}
         
         <div class="form-group">

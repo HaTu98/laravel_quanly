@@ -22,6 +22,7 @@ class User extends Authenticatable
     public function LienKet(){
         return $this->hasMany(times::class);
     }
+    protected $primaryKey = 'user_id';
     /**
      * The attributes that should be hidden for arrays.
      *
