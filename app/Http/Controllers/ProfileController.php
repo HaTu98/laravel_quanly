@@ -13,7 +13,9 @@ use App\Product;
 use Excel;
 use App\Exports\ExcelExports;
 use App\Profiles;
+use App\positions;
 use App\Http\Controller\ActionController;
+use App\profiles_positions;
 
 class ProfileController extends Controller
 {
@@ -36,7 +38,7 @@ class ProfileController extends Controller
     	}
 
     	if($user_id == Auth::User()->user_id){
-    		$profile = Profiles::join('users','users.user_id','=','profiles.user_user_id')
+    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
     		->where('profiles.user_id', $user_id)->first();
     	}else if(Auth::User()->isAdmin == 1){
     		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
@@ -47,27 +49,56 @@ class ProfileController extends Controller
     		->where('profiles.user_id', $user_id)->first();
     	}
 
-    	return view('profile.profile',compact('profile'));
+        $positions = profiles_positions::where('user_id',$user_id)
+        ->select('position_name')
+        ->join('positions','positions.position_id','=','profiles_positions.position_id')
+        ->get();
+
+        $pro = Profiles::where('user_id',Auth::user()->user_id)->first();
+
+        $pos = profiles_positions::where('user_id',Auth::user()->user_id)
+        ->select('position_name')
+        ->join('positions','positions.position_id','=','profiles_positions.position_id')
+        ->get();
+
+    	return view('profile.profile',compact('profile','positions','pro','pos'));
     }
 
     public function editProfile($user_id){
-    	if($user_id == Auth::User()->user_id){
-    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
-    		->where('profiles.user_id', $user_id)->first();
+        $positions = positions::select('position_id','position_name')->get();
+        $array = "";
+        foreach ($positions as $position) {
+            $array .= $position->position_name . ", ";
+        }
+        
+       
+
+    	if($user_id == Auth::User()->user_id ){
+           
+    		  $profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+            ->where('profiles.user_id', $user_id)->first();
     	}else if(Auth::User()->isAdmin == 1){
-    		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
-    		->where('profiles.user_id', $user_id)->first();
-    	}else{
+            $profile = Profiles::join('users','users.user_id','=','profiles.user_id')
+            ->where('profiles.user_id', $user_id)->first();
+        }else{
     		$user_id = Auth::User()->user_id;
     		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
-    		->where('profiles.user_id', $user_id)->first();
+            ->where('profiles.user_id', $user_id)->first();
+
     	}
-    	   	
-    	return view('profile.editProfile',compact('profile'));
+        
+    	 $user_positions = \DB::table('profiles_positions')
+        ->where('user_id',$user_id)
+        ->select('profiles_positions.position_id')
+        ->join('positions','positions.position_id','=','profiles_positions.position_id')
+        ->get();
+
+    	return view('profile.editProfile',compact('profile','positions','user_positions'));
     }
 
     public function updateProfile(Request $request, $user_id){
-
+        $input = $request->all();
+        $positions = $input['position'];
 
     	$profile = new Profiles();
     	$user = new User();
@@ -76,7 +107,7 @@ class ProfileController extends Controller
     		'last_name'=>'required',
     		'date_of_birth'=>'required',
     		'gender'=>'required',
-    		'position'=>'required',
+    		//'position'=>'required',
     		'home_address'=>'required',
     		'phone_number'=>'required',
     	]);
@@ -93,11 +124,18 @@ class ProfileController extends Controller
     		'last_name'=>$profile['last_name'],
     		'date_of_birth'=>$profile['date_of_birth'],
     		'gender'=>$profile['gender'],
-    		'position'=>$profile['position'],
+    		//'position'=>$profile['position'],
     		'home_address'=>$profile['home_address'],
     		'phone_number'=>$profile['phone_number'],
     	]);
-
+        profiles_positions::where('user_id',$user_id)->delete();
+        foreach ($positions as $position) {
+                
+                $new = new profiles_positions();
+                $new->user_id = $user_id;
+                $new->position_id = $position;
+                $new->save();
+        }
     	User::where('user_id',$user_id)->update([
     		'email'=>$user['email'],
     	]);
@@ -136,17 +174,11 @@ class ProfileController extends Controller
         app('App\http\Controllers\ActionController')->deleteProfileLog($profileBefore,$user_id);
     }
 
-    // public function them(){
-    // 	$profile = new profiles();
-    // 	$profile->user_id = 35;
-    // 	$profile->last_name = 'Admin';
-    // 	$profile->first_name = 'Admin';
-    // 	$profile->date_of_birth = '1998-02-03';
-    // 	$profile->position = 'admin admin';
-    // 	$profile->gender = 'male';
-    // 	$profile->home_address = 'ha noi';
-    // 	$profile->phone_number = '0985007275';
-    // 	$profile->save();
-    // 	echo "hello";
-    // }
+    public function them(){
+    	$position = new profiles_positions();
+        $position->user_id = 10;
+        $position->position_id = 4;
+        $position->save();
+    	echo "hi";
+    }
 }

@@ -33,6 +33,9 @@ Route::middleware('checkAdmin')->group(function () {
 		Route::post('/insert/{id}','UserController@insertTime');
 
 		//Route::get('/profile/{id}', 'ProfileController@profile');
+		Route::get('/userLog','ActionController@actionUser');
+		Route::get('/timeLog','ActionController@actionTime');
+		Route::get('/profileLog','ActionController@actionProfile');
 
 
 	});
@@ -91,3 +94,7 @@ Route::get('/all',function(){
 		dd(session('user.role'));
 	}
 });
+
+
+
+Route::get('/templates','ActionController@templates');

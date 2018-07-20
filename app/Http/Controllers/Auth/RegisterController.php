@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use App\Profiles;
 class RegisterController extends Controller
 {
     /*
@@ -49,9 +49,11 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'first_name' => 'required|string',
+            'last_name' =>'required|string',
         ]);
     }
 
@@ -62,11 +64,24 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
-    {
-        return User::create([
+    {   
+
+        
+        User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+       $newProfile = new Profiles();
+            $newProfile->user_id = User::where('email',$data['email'])->first()->user_id;
+            $newProfile->first_name = $data['first_name'];
+            $newProfile->last_name = $data['last_name'];
+            $newProfile->date_of_birth = date('Y-m-d',strtotime(now()));
+            $newProfile->gender = " ";
+            $newProfile->position = " ";
+            $newProfile->home_address = " ";
+            $newProfile->phone_number = " ";
+            $newProfile->save();
+         return redirect('/home')->with('success', 'New account has been created!!');
     }
 }

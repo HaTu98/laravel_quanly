@@ -22,7 +22,17 @@ class User extends Authenticatable
     public function LienKet(){
         return $this->hasMany(times::class);
     }
+
+    public function userProfiles(){
+        return $this->hasone('App\Profiles','user_id','user_id');
+    }
+
+    public function userPositions(){
+        return $this->belongsToMany('App\positions');
+    }
     protected $primaryKey = 'user_id';
+
+
     /**
      * The attributes that should be hidden for arrays.
      *

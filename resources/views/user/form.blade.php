@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.templates')
 
 
 
@@ -53,4 +53,5 @@
         {{ $times->links() }}
     </div>
 </div>
+
 @endsection

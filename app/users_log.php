@@ -9,4 +9,4 @@ class users_log extends Model
     protected $table = 'users_log';
     protected $primaryKey = 'action_id';
 }
-}
+

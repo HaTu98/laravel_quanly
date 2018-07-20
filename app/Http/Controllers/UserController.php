@@ -18,7 +18,7 @@ class UserController extends Controller
      public function user()
     {   
     	$users = User::Paginate(7);
-       
+        
         return view('user.users',compact('users'));
     }
 
@@ -71,7 +71,6 @@ class UserController extends Controller
         } else{
             return redirect('/home')->with('success', 'You do not change anything!!');
         }
-
         
     }
    
@@ -207,10 +206,25 @@ class UserController extends Controller
     	$times = \DB::table('times')
     		->join('users','users.user_id','=','times.user_id')
     		->where('times.user_id',$user_id)
+            ->whereYear('date',date('Y',strtotime(now())))
+            ->whereMonth('date',date('m',strtotime(now())))
     		->orderBy('date','desc')
     		->Paginate(7);
-
-    	return view('user.editHistory',compact("times","user_id"));
+        $timess = \DB::table('times')
+            ->join('users','users.user_id','=','times.user_id')
+            ->where('times.user_id',$user_id)
+            ->whereYear('date',date('Y',strtotime(now())))
+            ->whereMonth('date',date('m',strtotime(now())))
+            ->get();
+        $allTime = 0;
+        $timeLeave = 0;
+        foreach ($timess as $time) {
+            $allTime += $time->time_per_day;
+            if($time->time_per_day < 8){
+                $timeLeave += 8 - $time->time_per_day;
+            }
+        }
+    	return view('user.editHistory',compact("times","user_id","allTime","timeLeave"));
     }
 
     public function editTime($time_id)
@@ -346,6 +360,8 @@ class UserController extends Controller
 
     }
     
-    
+    public function test(){
+        return view('test');
+    }
 
 }

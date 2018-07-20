@@ -1,8 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.templates')
 
+<script src={{asset("js/jquery-3.3.1.min.js")}}></script>
 
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src={{asset("js/dist/js/bootstrap-select-1.12.4/js/bootstrap-select.min.js")}}></script>
+
 <!------ Include the above in your HEAD tag ---------->
 @section('content')
 <div class="container">
@@ -24,7 +25,7 @@
             <div class="panel-body">
               	<div class="row">
                 	<div class="col-md-3 col-lg-3 " align="center"> 
-                		<img alt="User Pic"  src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="70" class="img-circle img-responsive"> 
+                		<img alt="User Pic"  src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="100" class="img-circle img-responsive"> 
                 	</div>
                 
                   {{csrf_field()}}
@@ -51,7 +52,11 @@
                       				</tr>
                       				<tr>
                           				<td>Position :</td>
-                          				<td>{{$profile->position}}</td>
+                                   <td>
+                                  @foreach($positions as $position)
+                                   {{$position->position_name . ", "}}
+                                  @endforeach
+                                  </td>
                       				</tr>
                       				<tr>
                         				<td>Home Address :</td>

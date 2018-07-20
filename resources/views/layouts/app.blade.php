@@ -40,11 +40,13 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+
                         <!-- Authentication Links -->
                         @guest
                            
                         @else
-                         <a class="navbar-brand" href="{{url('/profile', Auth::User()->id)}}"> {{ 'profile' }} </a>
+                         <a class="navbar-brand" href="{{url('/profile', Auth::User()->user_id)}}"> {{ 'profile' }} </a>
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

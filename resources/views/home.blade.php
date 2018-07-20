@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.templates')
 
 @section('content')
 <div class="container">
@@ -6,6 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
+                    <!--
                     <span style="color: red; font-size: 32px">
                         Dashboard : 
                         @if(session('user.role') == 1)
@@ -14,6 +15,7 @@
                             Staff
                         @endif
                     </span>
+                    -->
 
                 </div>
 
@@ -29,7 +31,12 @@
                             {{\Session::get('success')}}
                         </div>
                     @endif
-                    
+                    <div class="text-center" style="font-size: 100px">
+                        <tr>
+                            HeLLO
+                        </tr>
+                    </div>
+                    <!--
                     @if(session('user.role') == 1)
                         <th class="row">
                             <a href="{{ route('register') }}" class="btn btn-success">Register</a>
@@ -46,6 +53,7 @@
                        <a href = "{{url('/form')}}"class="btn btn-danger">Form</a>
 
                     </th>
+                    -->
             </div>
         </div>
     </div>
