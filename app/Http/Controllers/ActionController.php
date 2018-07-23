@@ -65,7 +65,15 @@ class ActionController extends Controller
     	$action->after_action = "user has been deleted!";
     	$action->save();
     }
-
+    public function restoreUserLog($userAfter, $user_update_id){
+        $action = new users_log();
+        $action->user_id = Auth::User()->user_id;
+        $action->user_update_id = $user_update_id;
+        $action->action_type = 2;
+        $action->before_action = "user has been deleted!";
+        $action->after_action = $userAfter->name . " " .  $userAfter->email . " " . $userAfter->isAdmin;
+        $action->save();
+    }
     public function updateProfileLog($profileBefore, $profileAfter,$user_update_id){
 
     	$action = new profiles_log();
@@ -108,6 +116,25 @@ class ActionController extends Controller
 
     	$action->after_action = "profile has been deleted";
     	$action->save();
+    }
+
+    public function restoreProfileLog($profileAfter, $profile_update_id){
+        $action = new profiles_log();
+        $action->user_id = Auth::User()->user_id;
+        $action->profile_update_id = $profile_update_id;
+        $action->action_type = 2;
+        $action->before_action = "profile has been deleted";
+
+        $action->after_action = $profileAfter->first_name . " " .  
+                                 $profileAfter->last_name . " " . 
+                                 $profileAfter->date_of_birth. " " .
+                                 $profileAfter->position. " " .
+                                 $profileAfter->gender. " " .
+                                 $profileAfter->home_address. " " .
+                                 $profileAfter->email. " " .
+                                 $profileAfter->phone_number;
+
+        $action->save();
     }
 
     public function actionUser(){

@@ -166,12 +166,14 @@ class ProfileController extends Controller
     }
 
     public function deleteProfile($user_id){
-        $profileBefore = Profiles::where('user_id',$user_id)->first();
-
-        $profile = Profiles::where('user_id', $user_id)->delete();
-        
-
-        app('App\http\Controllers\ActionController')->deleteProfileLog($profileBefore,$user_id);
+        $profile = Profiles::where('user_id',$user_id)->first();
+        $user = User::find($user_id);
+        if($user->deleted == 1){
+            app('App\http\Controllers\ActionController')->deleteProfileLog($profile,$user_id);
+        }
+        else{
+            app('App\http\Controllers\ActionController')->restoreProfileLog($profile,$user_id);
+        }
     }
 
     public function them(){

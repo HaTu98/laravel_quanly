@@ -71,7 +71,7 @@
                       			</tr>
                    			</tbody>
                   		</table>
-                  	<a href="{{url('/editProfile', $profile->user_id)}}" class="btn btn-primary"> Edit</a>
+                  	<a href="{{url('/editProfile', $profile->user_id)}}" style="margin-left: 100px"  class="btn btn-primary"> Edit</a>
                 	</div>
             	
               	</div>
@@ -79,4 +79,10 @@
         </div>
     </div>
 </div>
+
+<!-- jQuery 3 -->
+<script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- AdminLTE App -->
 @endsection

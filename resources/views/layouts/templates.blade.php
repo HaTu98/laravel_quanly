@@ -97,7 +97,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </small>
                 </p>
               </li>
-              <!-- Menu Body -->
+              <!-- Menu Body --
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
@@ -110,7 +110,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a href="#">Friends</a>
                   </div>
                 </div>
-                <!-- /.row -->
+                -- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
@@ -163,13 +163,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the lin{{ route('register') }}s -->
         @if(session('user.role') == 1)
-        	<li class="active"><a href="{{url('/admin/user')}}"><i class="fa fa-link"></i> <span>Show All User</span></a></li>
+          <li class="treeview">
+            <a href="#"><i class="fa fa-link"></i> <span>Show ALL Users</span>
+             <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>s
+            </a>
+            <ul class="treeview-menu">
+              <li ><a href="{{url('/admin/users')}}"><i ></i> <span>All Users</span></a></li>
+              <li ><a href="{{url('/admin/usersHasDeleted')}}"><i ></i> <span>Users Has Deleted</span></a></li>
+            </ul>
+          </li>  
+        	
         	<li><a href="{{ route('register') }}"><i class="fa fa-link"></i> <span>Register</span></a></li>
         	
 
         	<li class="treeview">
           		<a href="#"><i class="fa fa-link"></i> <span>Action Log</span>
-            	<span class="pull-right-container">
+            	 <span class="pull-right-container">
                 	<i class="fa fa-angle-left pull-right"></i>
               	</span>
           		</a>
@@ -183,17 +194,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         @endif
         <li><a href="{{ url('/start')}}"><i class="fa fa-link"></i> <span>Checkin</span></a></li>
         <li><a href="{{ url('/form') }}"><i class="fa fa-link"></i> <span>Times</span></a></li>
-        <li class="treeview">
-          <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#">Link in level 2</a></li>
-            <li><a href="#">Link in level 2</a></li>
-          </ul>
-        </li>
+       
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -250,9 +251,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 3 -->
-<script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
 

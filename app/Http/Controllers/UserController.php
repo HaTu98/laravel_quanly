@@ -15,28 +15,47 @@ use App\http\Controllers\ActionController;
 
 class UserController extends Controller
 {
-     public function user()
+     public function users()
     {   
-    	$users = User::Paginate(7);
-        
+    	$users = User::where('deleted',0)->Paginate(7);
         return view('user.users',compact('users'));
+    }
+
+    public function usersHasDeleted(){
+        $users = User::where('deleted',1)->Paginate(7);
+        return view('user.usersHasDeleted',compact('users'));
     }
 
     public function destroy($user_id)
     {
         $user = User::find($user_id);
 
-
-        app('App\http\Controllers\ProfileController')->deleteProfile($user_id);
-        $user->delete();
-
-        $userAfter = User::find($user_id);
-        if($userAfter == null){      
-            
-             app('App\http\Controllers\ActionController')->deleteUserLog($user,$user_id);
-             return redirect('/home')->with('success', 'user has been deleted!!');
+        if($user->deleted == 0){
+            User::where('user_id',$user->user_id)->update([
+                'deleted' => 1,
+            ]);
+        
+            app('App\http\Controllers\ProfileController')->deleteProfile($user_id);
+            $userAfter = User::find($user_id);
+            if($userAfter->deleted == 1){                  
+                app('App\http\Controllers\ActionController')->deleteUserLog($user,$user_id);
+                return redirect('/home')->with('success', 'user has been deleted!!');
+            }else{
+                return redirect('/home')->with('success', 'You do not change anything!!');
+            }
         }else{
-            return redirect('/home')->with('success', 'You do not change anything!!');
+            User::where('user_id',$user->user_id)->update([
+                'deleted' => 0,
+            ]);
+        
+            app('App\http\Controllers\ProfileController')->deleteProfile($user_id);
+            $userAfter = User::find($user_id);
+            if($userAfter->deleted == 0){                  
+                app('App\http\Controllers\ActionController')->restoreUserLog($userAfter,$user_id);
+                return redirect('/home')->with('success', 'user has been Restore!!');
+            }else{
+                return redirect('/home')->with('success', 'You do not change anything!!');
+            }
         }
         //return back();
         // return redirect('/home')->with('success', 'user has been deleted!!');
