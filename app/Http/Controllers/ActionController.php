@@ -143,6 +143,7 @@ class ActionController extends Controller
         ->select('users.name','users1.name as name_update','users_log.action_type' ,'users_log.before_action','users_log.after_action', 'users_log.created_at')
         ->join('users','users_log.user_id', '=', 'users.user_id')
         ->join('users as users1','users_log.user_update_id','=', 'users1.user_id')
+        ->orderBy('created_at','desc')
         ->paginate(10);
 
         return view('action.userLog',compact('users_log'));
@@ -153,6 +154,7 @@ class ActionController extends Controller
         ->join('users','users.user_id', '=','times_log.user_id')
         ->join('times', 'times.time_id', '=', 'times_log.time_id')
         ->join('users as users1', 'times.user_id', '=', 'users1.user_id')
+        ->orderBy('created_at','desc')
         ->paginate(10);
         return view('action.timeLog',compact('times_log'));
     }
@@ -163,6 +165,7 @@ class ActionController extends Controller
         ->select("users.name","users1.name as name_update","profiles_log.action_type","profiles_log.before_action","profiles_log.after_action","profiles_log.created_at")
         ->join('users as users','profiles_log.user_id', '=' , 'users.user_id')
         ->join('users as users1','profiles_log.profile_update_id', '=' , 'users1.user_id')
+        ->orderBy('created_at','desc')
         ->paginate(7);
 
         return view('action.profileLog',compact('profiles_log'));

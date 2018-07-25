@@ -1,15 +1,33 @@
 @extends('layouts.templates')
 
 
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <span style="color: red; font-size: 32px">
-                        Time Working
+                    <form method="get" action="{{action('UserController@form')}}">
+                    <label> Month : </label>
+                    <label>
+                        <select name="select" style="width:200px" class="position">                            
+                            @foreach($months as $month)
+                            <option {{$date == $month->month ? 'selected' : ''}}>
+                                {{$month->month}}
+                            </option>
+                            @endforeach
+                        </select>
+
+                    </label>
+                    <button type="submit" class="btn btn-primary">Select</button>
+                    </form>
+                    <br \>
+                     <span style="color: blue; font-size: 24px">
+                        <td>Total time working : </td>
+                        <td>{{$allTime}}</td>
+                        <br \>
+                        <td>Total time leave in month : </td>
+                        <td>{{$timeLeave}}</td>
                     </span>
 
                 </div>

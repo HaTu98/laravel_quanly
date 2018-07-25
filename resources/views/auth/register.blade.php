@@ -2,8 +2,7 @@
 
 @section('content')
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
 <!------ Include the above in your HEAD tag ---------->
 
 <div class="container">
@@ -17,7 +16,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="form-group">
-                        <input type="text" name="first_name" id="first_name" class="form-control input-lg" placeholder="First Name" tabindex="1">
+                        <input type="text" name="first_name" id="first_name" class="form-control input-lg" required autofocus placeholder="First Name" tabindex="1">
                         @if ($errors->has('first_name'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('first_name') }}</strong>
@@ -27,7 +26,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="form-group">
-                        <input type="text" name="last_name" id="last_name" class="form-control input-lg" placeholder="Last Name" tabindex="2">
+                        <input type="text" name="last_name" id="last_name" class="form-control input-lg" required autofocus placeholder="Last Name" tabindex="2">
                         @if ($errors->has('last_name'))
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $errors->first('last_name') }}</strong>
@@ -47,7 +46,7 @@
                                 @endif
             </div>
             <div class="form-group">
-                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} input-lg" placeholder="Email Address" name="email" value="{{ old('email') }}" required>
+                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }} input-lg" required autofocus placeholder="Email Address" name="email" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="invalid-feedback" role="alert">
@@ -59,7 +58,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="form-group">
                        <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }} input-lg" 
-                       placeholder="Password" name="password" required>
+                       required autofocus placeholder="Password" name="password" required>
 
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
@@ -71,7 +70,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-6">
                     <div class="form-group">
                         
-                        <input id="password-confirm" type="password" class="form-control input-lg" placeholder="Confirm Password" name="password_confirmation" required>
+                        <input id="password-confirm" type="password" class="form-control input-lg" required autofocus placeholder="Confirm Password" name="password_confirmation" required>
                     </div>
                 </div>
             </div>
@@ -88,5 +87,9 @@
 </div>
 
 </div>
-
+<!-- jQuery 3 -->
+<script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<!-- AdminLTE App -->
 @endsection

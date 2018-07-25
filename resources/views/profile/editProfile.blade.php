@@ -16,6 +16,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
 
+
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  
   <!-- Fonts -->
   
   <!-- Styles -->
@@ -47,17 +53,9 @@
 
 <main class="py-4">
     <div class="container">
-      @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul>
-          @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div><br />
-      @endif
+      
       <p class=" text-info"> </p>
-      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+      <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 col-xs-offset-0 col-sm-offset-0 col-md-offset-2 col-lg-offset-2 toppad" >
         <div class="panel panel-info">
           
           <div class="panel-heading">
@@ -83,26 +81,27 @@
                       <tr>
                         <td>First Name :</td>
                         <td>
-                          <input type="text" class="form-control" name="first_name" value="{{$profile->first_name}}" />
+                          <input type="text" class="form-control" name="first_name" required autofocus placeholder="First Name" value="{{$profile->first_name}}" />
                         </td>
                       </tr>
                       <tr>
                         <td>Last Name :</td>
                         <td>
-                          <input type="text" class="form-control" name="last_name" value="{{$profile->last_name}}" />
+                          <input type="text" class="form-control" name="last_name" required autofocus placeholder="Last Name" value="{{$profile->last_name}}" />
                         </td>
                       </tr>
                       <tr>
                         <td>Date of Birth :</td>
                         <td>
-                          <input type="text" class="form-control" name="date_of_birth" value="{{$profile->date_of_birth}}" />
+                         
+                          <input type="text" id="datepicker" name="dob[]" class="dob" required autofocus placeholder="Date of Birth" value="{{$profile->date_of_birth}}"></p>
                         </td>
                       </tr>
                       <tr>
                         <tr>
                           <td>Gender :</td>
                           <td>
-                            <input type="text" class="form-control" name="gender" value="{{$profile->gender}}" />
+                            <input type="text" class="form-control" name="gender" required autofocus placeholder="Gender" value="{{$profile->gender}}" />
                           </td>
                         </tr>
                         <tr>
@@ -110,7 +109,7 @@
                           <td>
                          
                             <label>
-                              <select id="Example" name="position[]" class="position" multiple="true">
+                              <select id="multiselect" name="position[]" class="position" multiple="true" style="width:200px">
 
                                 @foreach($positions as $position)
                                   <?php  
@@ -134,19 +133,19 @@
                         <tr>
                           <td>Home Address :</td>
                           <td>
-                            <input type="text" class="form-control" name="home_address" value="{{$profile->first()->home_address}}" />
+                            <input type="text" class="form-control" name="home_address" required autofocus placeholder="Home Address" value="{{$profile->first()->home_address}}" />
                           </td>
                         </tr>
                         <tr>
                           <td>Email :</td>
                           <td>
-                            <input type="text" class="form-control" name="email" value="{{$profile->email}}" />
+                            <input type="text" class="form-control" name="email" required autofocus placeholder="Email" value="{{$profile->email}}" />
 
                           </td>
                         </tr>
                         <td>Phone Number :</td>
                         <td>
-                          <input type="text" class="form-control" name="phone_number" value="{{$profile->first()->phone_number}}" />
+                          <input type="text" class="form-control" name="phone_number" required autofocus placeholder="Phone Number" value="{{$profile->first()->phone_number}}" />
                         </td>
                         
                       </tr>
@@ -166,13 +165,23 @@
     
     <script>
       $(document).ready(function(){
-       $('#Example').multiselect({
+       $('#multiselect').multiselect({
         nonSelectedText: 'Select Position',
         enableFiltering: true,
         enableCaseInsensitiveFiltering: true,
         buttonWidth:'400px',
+        maxHeight : 190,
       });
+      
      });
-   </script>   
+   </script>
+   <script>
+    $( function() {
+      $( "#datepicker" ).datepicker({
+        dateFormat: 'yy/mm/dd' 
+      });
+    });
+  </script> 
  </main>
+ 
 @endsection

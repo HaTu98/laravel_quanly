@@ -99,15 +99,14 @@ class ProfileController extends Controller
     public function updateProfile(Request $request, $user_id){
         $input = $request->all();
         $positions = $input['position'];
+        $date_of_birth = $input['dob'][0];
 
     	$profile = new Profiles();
     	$user = new User();
     	$profile = $this->validate($request, [
     		'first_name'=>'required',
     		'last_name'=>'required',
-    		'date_of_birth'=>'required',
     		'gender'=>'required',
-    		//'position'=>'required',
     		'home_address'=>'required',
     		'phone_number'=>'required',
     	]);
@@ -115,27 +114,42 @@ class ProfileController extends Controller
     	$user = $this->validate($request,[
     		'email'=>'required',
     	]);
-
+       
         $profileBefore = Profiles::join('users','users.user_id','=','profiles.user_id')
             ->where('profiles.user_id', $user_id)->first();
 
     	profiles::where('user_id',$user_id)->update([
     		'first_name'=>$profile['first_name'],
     		'last_name'=>$profile['last_name'],
-    		'date_of_birth'=>$profile['date_of_birth'],
+    		'date_of_birth'=>$date_of_birth,
     		'gender'=>$profile['gender'],
     		//'position'=>$profile['position'],
     		'home_address'=>$profile['home_address'],
     		'phone_number'=>$profile['phone_number'],
     	]);
-        profiles_positions::where('user_id',$user_id)->delete();
+
+        $arr = "";
+        $arr1 = "";
+        $arr2 = "";
+        
         foreach ($positions as $position) {
+            $arr .=$position . " "; 
+        }
+        $pps =  profiles_positions::where('user_id',$user_id)->get();
+        foreach ($pps as $pp) {
+            $arr1 .= $pp['position_id'] . " ";
+        }
+        if($arr != $arr1){
+        profiles_positions::where('user_id',$user_id)->delete();
+            foreach ($positions as $position) {
                 
                 $new = new profiles_positions();
                 $new->user_id = $user_id;
                 $new->position_id = $position;
                 $new->save();
+            }
         }
+
     	User::where('user_id',$user_id)->update([
     		'email'=>$user['email'],
     	]);
@@ -144,7 +158,10 @@ class ProfileController extends Controller
     		$request->file('img')->move('img',$user_id . ".jpg");
     	} 
     	
-        
+        $ppsAfter =  profiles_positions::where('user_id',$user_id)->get();
+        foreach ($ppsAfter as $pp) {
+            $arr2 .= $pp['position_id'] . " ";
+        }
         $profileAfter = Profiles::join('users','users.user_id','=','profiles.user_id')
             ->where('profiles.user_id', $user_id)->first();
 
@@ -154,7 +171,8 @@ class ProfileController extends Controller
             $profileBefore->position != $profileAfter->position ||
             $profileBefore->gender != $profileAfter->gender ||
             $profileBefore->home_address != $profileAfter->home_address ||
-            $profileBefore->phone_number != $profileAfter->phone_number)
+            $profileBefore->phone_number != $profileAfter->phone_number ||
+            $arr1 != $arr2)
         {
 
             app('App\http\Controllers\ActionController')

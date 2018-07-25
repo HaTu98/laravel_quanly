@@ -209,31 +209,30 @@ class UserController extends Controller
     	return view('user.form',compact("times"));
     }
 
-    public function  form(){
-    	$times = \DB::table('times')
-    		->join('users','users.user_id','=','times.user_id')
-    		->where('times.user_id',Auth::user()->user_id)
-    		->whereYear('date',date('Y',strtotime(now())))
-    		->whereMonth('date',date('m',strtotime(now())))
-    		->orderBy('date','desc')
-    		->Paginate(7);
+    public function  form(Request $request){
+         $date = $request->select;
+         if($date == null) 
+            $date = date('Y-m',strtotime(now()));
+       
 
-    	return view('user.form',compact("times"));
-    }
-
-    public function history($user_id){
+        $months = \DB::table('times')
+        ->select(\DB::raw("date_format(date, '%Y-%m') as month"))
+        ->where('times.user_id',Auth::user()->user_id)
+        ->groupBy('month')
+        ->orderBy('date','desc')
+        ->get();
     	$times = \DB::table('times')
-    		->join('users','users.user_id','=','times.user_id')
-    		->where('times.user_id',$user_id)
-            ->whereYear('date',date('Y',strtotime(now())))
-            ->whereMonth('date',date('m',strtotime(now())))
-    		->orderBy('date','desc')
-    		->Paginate(7);
+            ->join('users','users.user_id','=','times.user_id')
+            ->where('times.user_id',Auth::user()->user_id)
+            ->whereYear('date',date('Y',strtotime( $date )))
+            ->whereMonth('date',date('m',strtotime($date)))
+            ->orderBy('date','desc')
+            ->Paginate(7);
         $timess = \DB::table('times')
             ->join('users','users.user_id','=','times.user_id')
-            ->where('times.user_id',$user_id)
-            ->whereYear('date',date('Y',strtotime(now())))
-            ->whereMonth('date',date('m',strtotime(now())))
+            ->where('times.user_id',Auth::user()->user_id)
+            ->whereYear('date',date('Y',strtotime($date)))
+            ->whereMonth('date',date('m',strtotime($date)))
             ->get();
         $allTime = 0;
         $timeLeave = 0;
@@ -243,7 +242,47 @@ class UserController extends Controller
                 $timeLeave += 8 - $time->time_per_day;
             }
         }
-    	return view('user.editHistory',compact("times","user_id","allTime","timeLeave"));
+        
+
+    	return view('user.form',compact("times","user_id","allTime","timeLeave","months","date"));
+    }
+
+    public function history($user_id,Request $request){
+
+         $date = $request->select;
+         if($date == null) 
+            $date = date('Y-m',strtotime(now()));
+       
+
+        $months = \DB::table('times')
+        ->select(\DB::raw("date_format(date, '%Y-%m') as month"))
+        ->where('times.user_id',$user_id)
+        ->groupBy('month')
+        ->orderBy('date','desc')
+        ->get();
+
+    	$times = \DB::table('times')
+    		->join('users','users.user_id','=','times.user_id')
+    		->where('times.user_id',$user_id)
+            ->whereYear('date',date('Y',strtotime($date)))
+            ->whereMonth('date',date('m',strtotime($date)))
+    		->orderBy('date','desc')
+    		->Paginate(7);
+        $timess = \DB::table('times')
+            ->join('users','users.user_id','=','times.user_id')
+            ->where('times.user_id',$user_id)
+            ->whereYear('date',date('Y',strtotime($date)))
+            ->whereMonth('date',date('m',strtotime($date)))
+            ->get();
+        $allTime = 0;
+        $timeLeave = 0;
+        foreach ($timess as $time) {
+            $allTime += $time->time_per_day;
+            if($time->time_per_day < 8){
+                $timeLeave += 8 - $time->time_per_day;
+            }
+        }
+    	return view('user.editHistory',compact("times","user_id","allTime","timeLeave","months","date"));
     }
 
     public function editTime($time_id)
@@ -261,6 +300,8 @@ class UserController extends Controller
             'start'=>'required',
             'finish'=> 'required',
         ]);
+        if(strtotime($time['finish']) < strtotime($time['start'])) 
+             return redirect()->back()->with('success', 'finish time must bigger than start time!!');
 
     	$times = times::where('time_id',$time_id)
     		->whereYear('date',date('Y',strtotime(now())))
@@ -338,6 +379,8 @@ class UserController extends Controller
             'finish'=>'required',
             'date' => 'required',
         ]);
+         if(strtotime($time['finish']) < strtotime($time['start'])) 
+             return redirect()->back()->with('success', 'finish time must bigger than start time!!');
         $time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
         $time['all_time'] = $time['time_per_day'];
         //dd($time['date']);

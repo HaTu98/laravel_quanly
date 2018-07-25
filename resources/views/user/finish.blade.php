@@ -6,8 +6,9 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
-                    <span style="color: red; font-size: 32px">
-                        Time Working
+                     <span style="color: red; font-size: 32px">
+                        <td>Time Working </td>
+                        
                     </span>
 
                 </div>

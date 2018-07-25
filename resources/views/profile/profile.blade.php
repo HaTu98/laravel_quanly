@@ -3,9 +3,9 @@
 <script src={{asset("js/jquery-3.3.1.min.js")}}></script>
 
 <script src={{asset("js/dist/js/bootstrap-select-1.12.4/js/bootstrap-select.min.js")}}></script>
-
-<!------ Include the above in your HEAD tag ---------->
 @section('content')
+<!------ Include the above in your HEAD tag ---------->
+
 <div class="container">
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -38,7 +38,7 @@
                         			<td>{{$profile->first_name}}</td>
                       			</tr>
                       			<tr>
-                        			<td>Lasr Name :</td>
+                        			<td>Last Name :</td>
                         			<td>{{$profile->last_name}}</td>
                       			</tr>
                       			<tr>
