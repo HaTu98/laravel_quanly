@@ -69,8 +69,9 @@
               <form method="post" action="{{action('ProfileController@updateProfile', $profile->user_id)}}" enctype="multipart/form-data"> 
                 {{csrf_field()}}
                 <div class="col-md-9 col-lg-9 " align="center"> 
-                  <img alt="User Pic"   src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="70" class="img-circle img-responsive"> 
-                  <input type="file" name="img" id = "img">
+                   
+                  <img alt="User Pic"  id="img" src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="70" class="img-circle img-responsive"  /> 
+                 <input type="file" accept="image/*" name="img" id = "imgInp" />
                 </div>
                 
                 
@@ -94,7 +95,7 @@
                         <td>Date of Birth :</td>
                         <td>
                          
-                          <input type="text" id="datepicker" name="dob[]" class="dob" required autofocus placeholder="Date of Birth" value="{{$profile->date_of_birth}}"></p>
+                          <input type="text" id="datepicker" name="dob[]" class="dob" required autofocus placeholder="Date of Birth" value="{{$profile->date_of_birth}}">
                         </td>
                       </tr>
                       <tr>
@@ -181,7 +182,25 @@
         dateFormat: 'yy/mm/dd' 
       });
     });
-  </script> 
+  </script>
+<script type='text/javascript'>
+ function readURL(input) {
+
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#img').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+$("#imgInp").change(function() {
+  readURL(this);
+});
+</script> 
  </main>
  
 @endsection

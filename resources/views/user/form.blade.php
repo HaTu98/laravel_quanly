@@ -42,7 +42,6 @@
               <th>Start</th>
               <th>Finish</th>
               <th>Today</th>
-              <th>Total</th>
               <th>Date</th>
             </tr>
         </thead>
@@ -52,11 +51,11 @@
             @foreach($times as $time)
                 <tr>
                     <td>{{$time->user_id}}</td>
-                    <td>{{$time->name}}</td>
+                    <td>{{Auth::user()->userProfiles->first_name}} {{Auth::user()->userProfiles->last_name}}</td>
                     <td>{{$time->start}}</td>
                     <td>{{$time->finish}}</td>
                     <td>{{$time->time_per_day}}</td>
-                    <td>{{$time->all_time}}</td>
+                   
                     <td>{{$time->date}}</td>
                 </tr>
             @endforeach
@@ -65,7 +64,7 @@
 
     </table>
     <div>
-        <a href = "{{action('UserController@print')}}" onclick="if (!confirm('Download file?')) { return false }" class="btn btn-success">print</a>
+        <a href = "{{action('UserController@print',$date)}}" onclick="if (!confirm('Download file?')) { return false }" class="btn btn-success">print</a>
     </div>
     <div class="clearfix">
         {{ $times->links() }}

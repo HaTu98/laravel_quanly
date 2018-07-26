@@ -123,7 +123,7 @@ class ProfileController extends Controller
     		'last_name'=>$profile['last_name'],
     		'date_of_birth'=>$date_of_birth,
     		'gender'=>$profile['gender'],
-    		//'position'=>$profile['position'],
+    		
     		'home_address'=>$profile['home_address'],
     		'phone_number'=>$profile['phone_number'],
     	]);

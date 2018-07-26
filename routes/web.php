@@ -50,7 +50,7 @@ Route::get('/form','UserController@form');
 Route::get('/checkout','UserController@checkout');
 
 
-Route::get('/print','UserController@print');
+Route::get('/print/{date}','UserController@print');
 Route::get('/profile/{id}',['as'=>'profile','uses'=> 'ProfileController@profile']);
 Route::get('/editProfile/{id}','ProfileController@editProfile');
 Route::post('/editProfile/{id}','ProfileController@updateProfile');

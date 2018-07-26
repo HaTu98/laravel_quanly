@@ -311,17 +311,16 @@ class UserController extends Controller
 
     	//dd($times['time_per_day']);
     	$time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
-    	$time['all_time'] = $times['all_time'] - $times['time_per_day'] + $time['time_per_day'];
-
+    	
         times::where('time_id',$time_id)->update([
         		'start' =>$time['start'],
     			'finish'=>$time['finish'],
     			'time_per_day' => $time['time_per_day'],
-    			'all_time' => $time['all_time'],
+    			
     			'status' => 2,
     	]);
 
-    	$this->updateAllTime($times);
+    	
 
         $timeAfter =  times::where('time_id',$time_id)->first();
 
@@ -331,28 +330,6 @@ class UserController extends Controller
         } else{
             return redirect('/home')->with('success', 'You do not change anything!!');
         }
-    }
-
-
-
-    public function updateAllTime($times){
-    	$allTimes = times::where('user_id',$times->user_id)
-    	->whereYear('date',date('Y',strtotime(now())))
-    	->whereMonth('date',date('m',strtotime(now())))
-        ->orderBy('date','asc')
-    	->get();
-    	$all = 0;
-        //dd($allTimes);
-    	foreach ($allTimes as $allTime) {
-    		
-			if($allTime->status == 2 ){
-				$all = $all + $allTime->time_per_day;
-
-				times::where('time_id', $allTime->time_id)->update([
-					'all_time'=>$all,
-				]);
-			} 		
-    	}
     }
 
 
@@ -406,16 +383,25 @@ class UserController extends Controller
         }
     }
 
-    public function print(){
-    	$times = \DB::table('times')
-    		->join('users','users.user_id','=','times.user_id')
-    		->where('times.user_id',Auth::user()->user_id)
-    		->whereYear('date',date('Y',strtotime(now())))
-    		->whereMonth('date',date('m',strtotime(now())))
-    		->select('users.user_id','name','start','finish','time_per_day','all_time','date')
-    		->orderBy('date','desc')->get();
+    public function print($date){
+    	// $times = \DB::table('times')
+    	// 	->join('users','users.user_id','=','times.user_id')
+    	// 	->where('times.user_id',Auth::user()->user_id)
+    	// 	->whereYear('date',date('Y',strtotime(now())))
+    	// 	->whereMonth('date',date('m',strtotime(now())))
+    	// 	->select('users.user_id','name','start','finish','time_per_day','all_time','date')
+    	// 	->orderBy('date','desc')->get()->toArray();
+        
+        if($date == null) 
+            $date = date('Y-m',strtotime(now()));
+        $data =times::join('users','users.user_id','=','times.user_id')
+            ->where('times.user_id',\Auth::user()->user_id)
+            ->whereYear('date',date('Y',strtotime($date)))
+            ->whereMonth('date',date('m',strtotime($date)))
+            ->select('users.user_id','name','start','finish','time_per_day','date')
+            ->orderBy('date','desc')->get();
 
-    	return Excel::download(new ExcelExports, 'invoices.xlsx');
+    	return Excel::download(new ExcelExports($data),'export.xlsx');
     }
 
     public function insertAllTime(){
