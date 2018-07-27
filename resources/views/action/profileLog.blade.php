@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header">
                     <span style="color: red; font-size: 32px">
-                        Admin Action
+                        Profile Log
                     </span>
 
                 </div>
@@ -33,7 +33,7 @@
             <tr>
                 <td>{{$profile_log->name}}</td>
                 <td>{{$profile_log->name_update}}</td>
-                <td>{{$profile_log->action_type}}</td>
+                <td>{{$profile_log->action_type == 0 ? 'Delete': 'Update' }}</td>
                 <td>{{$profile_log->before_action}}</td>
                 <td>{{$profile_log->after_action}}</td>
                 <td>{{$profile_log->created_at}}</td>
@@ -42,9 +42,7 @@
         </tbody>
 
     </table>
-    <div>
-        <a href = "" onclick="if (!confirm('Download file?')) { return false }" class="btn btn-success">print</a>
-    </div>
+   
     <div class="clearfix">
        {{ $profiles_log->links() }}
     

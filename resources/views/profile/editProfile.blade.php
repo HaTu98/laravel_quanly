@@ -70,7 +70,7 @@
                 {{csrf_field()}}
                 <div class="col-md-9 col-lg-9 " align="center"> 
                    
-                  <img alt="User Pic"  id="img" src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="70" class="img-circle img-responsive"  /> 
+                  <img alt="User Pic"  id="img" name="image" src={{url("img/" . $profile->user_id . ".jpg")}} width="100" height="70" class="img-circle img-responsive"  /> 
                  <input type="file" accept="image/*" name="img" id = "imgInp" />
                 </div>
                 
@@ -102,7 +102,9 @@
                         <tr>
                           <td>Gender :</td>
                           <td>
-                            <input type="text" class="form-control" name="gender" required autofocus placeholder="Gender" value="{{$profile->gender}}" />
+                           <input type="radio" name="gender" value=1 {{ $profile->gender == 1 ? 'checked' :''}} > Male<br>
+                            <input type="radio" name="gender" value=0 {{ $profile->gender == 0 ? 'checked' :''}}> Female
+                              
                           </td>
                         </tr>
                         <tr>

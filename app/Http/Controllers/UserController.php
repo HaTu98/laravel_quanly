@@ -70,11 +70,19 @@ class UserController extends Controller
     public function update(Request $request, $user_id)
     {   
         $user = new User();
+
         $data = $this->validate($request, [
             'name'=>'required',
             'email'=> 'required',
-            'isAdmin'=> 'required'
         ]);
+
+        if($request->is_admin == 1){
+            $data['is_admin'] = 1;
+
+        }else{
+            $data['is_admin'] = 0;
+        }
+       
         $data['user_id'] = $user_id;
         $userBefore = User::where('user_id', $user_id)->first();
         
@@ -83,8 +91,8 @@ class UserController extends Controller
         $userAfter = User::where('user_id',$user_id)->first();
 
         if($userBefore->start != $userAfter->start || $userBefore->finish != $userAfter->finish ||
-            $userBefore->isAdmin != $userAfter->isAdmin){
-            app('App\http\Controllers\ActionController')->updateUserLog($userBefore,$userAfter,$id);
+            $userBefore->is_admin != $userAfter->is_admin){
+            app('App\http\Controllers\ActionController')->updateUserLog($userBefore,$userAfter,$user_id);
 
             return redirect('/home')->with('success', 'New support user has been updated!!');
         } else{
@@ -99,7 +107,7 @@ class UserController extends Controller
         User::where('user_id',$user_id)->update([
             'name'=>$data['name'],
             'email'=>$data['email'],
-            'isAdmin'=>$data['isAdmin'],
+            'is_admin'=>$data['is_admin'],
         ]);
         
         return $data;
@@ -161,10 +169,7 @@ class UserController extends Controller
     	$time->start = $start;
     	$time->finish = 0;
     	$time->time_per_day = 0;
-    	if($time_id != null)
-    		$time->all_time = $time_id->all_time;
-    	else 
-    		$time->all_time = 0;
+    	
     	$time->date = $date;
     	$time->status = 1;
     	$time->save();
@@ -191,7 +196,7 @@ class UserController extends Controller
     		times::where('time_id',$time_id->time_id)->update([
     			'finish'=>$finish,
     			'time_per_day' => $today,
-    			'all_time'=>$time_id->all_time + $today,
+    			
     			'status' => $status,
     	]);
     	}else {
@@ -206,7 +211,7 @@ class UserController extends Controller
     		->orderBy('date','desc')
     		->Paginate(7);
 
-    	return view('user.form',compact("times"));
+    	return view('/home');
     }
 
     public function  form(Request $request){
@@ -359,7 +364,7 @@ class UserController extends Controller
          if(strtotime($time['finish']) < strtotime($time['start'])) 
              return redirect()->back()->with('success', 'finish time must bigger than start time!!');
         $time['time_per_day'] =  (strtotime($time['finish']) - strtotime($time['start']))/3600; 
-        $time['all_time'] = $time['time_per_day'];
+       
         //dd($time['date']);
         $check = times::where('user_id', $user_id)
         ->where('date', $time['date'])->first();
@@ -370,11 +375,11 @@ class UserController extends Controller
             $insert->finish = $time['finish'];
             $insert->date = $time['date'];
             $insert->time_per_day = $time['time_per_day'];
-            $insert->all_time = $time['all_time'];
+           
             $insert->status = 2;
            
             $insert->save();
-            $this->updateAllTime($insert);
+            
 
             app('App\http\Controllers\ActionController')->insertTimeLog($insert,$insert->time_id);
             return redirect('/home')->with('success', 'New times has been inserted!!');

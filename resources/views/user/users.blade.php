@@ -22,10 +22,10 @@
                 <td>{{$user->user_id}}</td>
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
-                <td>{{$user->isAdmin}}</td>
+                <td>{{$user->is_admin == 1 ? 'Admin' : 'Staff'}}</td>
                 <td>
                     <a href="{{action('UserController@edit',$user->user_id)}}" class="btn btn-primary">Edit</a>
-                </td>
+                
                 <td>
                     <form action="{{action('UserController@destroy', $user->user_id)}}" method="post">
                         {{csrf_field()}}

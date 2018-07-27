@@ -78,7 +78,7 @@ class ActionController extends Controller
 
     	$action = new profiles_log();
     	$action->user_id = Auth::User()->user_id;
-    	$action->profile_update_id = $user_update_id;
+    	$action->user_update_id = $user_update_id;
     	$action->action_type = 1;
     	$action->before_action = $profileBefore->first_name . " " .  
     							 $profileBefore->last_name . " " . 
@@ -99,10 +99,10 @@ class ActionController extends Controller
     	$action->save();
     }
 
-    public function deleteProfileLog($profileBefore, $profile_update_id){
+    public function deleteProfileLog($profileBefore, $user_update_id){
     	$action = new profiles_log();
     	$action->user_id = Auth::User()->user_id;
-    	$action->profile_update_id = $profile_update_id;
+    	$action->user_update_id = $user_update_id;
     	$action->action_type = 0;
 
     	$action->before_action = $profileBefore->first_name . " " .  
@@ -118,10 +118,10 @@ class ActionController extends Controller
     	$action->save();
     }
 
-    public function restoreProfileLog($profileAfter, $profile_update_id){
+    public function restoreProfileLog($profileAfter, $user_update_id){
         $action = new profiles_log();
         $action->user_id = Auth::User()->user_id;
-        $action->profile_update_id = $profile_update_id;
+        $action->user_update_id = $user_update_id;
         $action->action_type = 2;
         $action->before_action = "profile has been deleted";
 
@@ -164,7 +164,7 @@ class ActionController extends Controller
         $profiles_log = \DB::table('profiles_log')
         ->select("users.name","users1.name as name_update","profiles_log.action_type","profiles_log.before_action","profiles_log.after_action","profiles_log.created_at")
         ->join('users as users','profiles_log.user_id', '=' , 'users.user_id')
-        ->join('users as users1','profiles_log.profile_update_id', '=' , 'users1.user_id')
+        ->join('users as users1','profiles_log.user_update_id', '=' , 'users1.user_id')
         ->orderBy('created_at','desc')
         ->paginate(7);
 

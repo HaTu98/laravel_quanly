@@ -40,9 +40,10 @@ class ProfileController extends Controller
     	if($user_id == Auth::User()->user_id){
     		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
     		->where('profiles.user_id', $user_id)->first();
-    	}else if(Auth::User()->isAdmin == 1){
+    	}else if(Auth::User()->is_admin == 1){
     		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
     		->where('profiles.user_id', $user_id)->first();
+          
     	}else{
     		$user_id = Auth::User()->user_id;
     		$profile = Profiles::join('users','users.user_id','=','profiles.user_id')
@@ -97,27 +98,34 @@ class ProfileController extends Controller
     }
 
     public function updateProfile(Request $request, $user_id){
+        
         $input = $request->all();
         $positions = $input['position'];
         $date_of_birth = $input['dob'][0];
 
+
+
     	$profile = new Profiles();
+       
+       
+       
     	$user = new User();
     	$profile = $this->validate($request, [
     		'first_name'=>'required',
     		'last_name'=>'required',
-    		'gender'=>'required',
     		'home_address'=>'required',
     		'phone_number'=>'required',
     	]);
 
+        $profile['gender'] = $request->gender;
+        
     	$user = $this->validate($request,[
     		'email'=>'required',
     	]);
        
         $profileBefore = Profiles::join('users','users.user_id','=','profiles.user_id')
             ->where('profiles.user_id', $user_id)->first();
-
+      
     	profiles::where('user_id',$user_id)->update([
     		'first_name'=>$profile['first_name'],
     		'last_name'=>$profile['last_name'],

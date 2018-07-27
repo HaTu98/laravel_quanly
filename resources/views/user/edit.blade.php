@@ -40,14 +40,12 @@
                                     </span>
                                 @endif
             </div>
-            <div class="form-group">
-                <input id="isAdmin" type="text" class="form-control input-lg" required autofocus placeholder="isAdmin" name="isAdmin" value="{{$user->isAdmin}}" required>
 
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+            <div class="form-group">
+
+                <input type="checkbox" name="is_admin" value="1" {{$user->is_admin == 1 ? 'checked' : ''}} >
+                <label>Is Admin</label>
+
             </div>
             <hr class="colorgraph">
             <div class="row">

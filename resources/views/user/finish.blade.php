@@ -29,7 +29,7 @@
                 <th>Start</th>
                 <th>Finish</th>
                 <th>Today</th>
-                <th>Total</th>
+                
                 <th>Date</th>
             </tr>
         </thead>
@@ -41,7 +41,7 @@
                     <td>{{$time->start}}</td>
                     <td>{{$time->finish}}</td>
                     <td>{{$time->time_per_day}}</td>
-                    <td>{{$time->all_time}}</td>
+                    
                     <td>{{$time->date}}</td>
                 </tr>
             @endforeach

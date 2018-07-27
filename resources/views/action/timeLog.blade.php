@@ -9,7 +9,7 @@
             <div class="card">
                 <div class="card-header">
                     <span style="color: red; font-size: 32px">
-                        Admin Action
+                        Time Log
                     </span>
 
                 </div>
@@ -25,7 +25,7 @@
               <th>Before</th>
               <th>After</th>
               <th>Time</th>
-             
+          
             </tr>
         </thead>
         <tbody>
@@ -33,7 +33,7 @@
             <tr>
                 <td>{{$time_log->name}}</td>
                 <td>{{$time_log->name_update}}</td>
-                <td>{{$time_log->action_type}}</td>
+                <td>{{$time_log->action_type == 0 ? 'Delete' : ''}} {{$time_log->action_type == 1 ? 'Update' : ''}} {{$time_log->action_type == 2 ? 'Insert' : ''}}</td>
                 <td>{{$time_log->before_action}}</td>
                 <td>{{$time_log->after_action}}</td>
                 <td>{{$time_log->created_at}}</td>
@@ -42,9 +42,7 @@
         </tbody>
 
     </table>
-    <div>
-        <a href = "" onclick="if (!confirm('Download file?')) { return false }" class="btn btn-success">print</a>
-    </div>
+   
     <div class="clearfix">
        {{ $times_log->links() }}
     

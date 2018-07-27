@@ -48,7 +48,7 @@
                       			<tr>
                       				<tr>
                           				<td>Gender :</td>
-                          				<td>{{$profile->gender}}</td>
+                          				<td>{{$profile->gender == 1 ?'female' : 'male'}}</td>
                       				</tr>
                       				<tr>
                           				<td>Position :</td>
