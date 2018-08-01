@@ -35,7 +35,7 @@
               <th>Start</th>
               <th>Finish</th>
               <th>Today</th>
-              s
+              
               <th>Date</th>
             </tr>
         </thead>

@@ -9,27 +9,26 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','isAdmin'
+        'name', 'email', 'password', 'is_admin'
     ];
 
-    public function LienKet(){
-        return $this->hasMany(times::class);
+    public function userProfiles()
+    {
+        return $this->hasone('App\Profiles', 'user_id', 'user_id');
     }
 
-    public function userProfiles(){
-        return $this->hasone('App\Profiles','user_id','user_id');
-    }
-
-    public function userPositions(){
+    public function userPositions()
+    {
         return $this->belongsToMany('App\positions');
     }
+
     protected $primaryKey = 'user_id';
 
 

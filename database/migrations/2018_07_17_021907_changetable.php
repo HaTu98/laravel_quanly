@@ -13,7 +13,7 @@ class Changetable extends Migration
      */
     public function up()
     {
-        Schema::table('profiles_positions', function(Blueprint $table){
+        Schema::table('profilesPositions', function(Blueprint $table){
             $table->increments('profiles_positions_id')->change();
         });
     }

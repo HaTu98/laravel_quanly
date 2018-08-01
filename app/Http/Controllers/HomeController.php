@@ -23,14 +23,14 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
         //dd(Auth::user()->isAdmin);
-        if((\Session::get('user.role')) == 1){
-          //  @isAd = "admin";
-        }else{
-          //  @isAd = "staff";
+        if ((\Session::get('user.role')) == 1) {
+            //  @isAd = "admin";
+        } else {
+            //  @isAd = "staff";
         }
-        
-        return view('home',['isAd'=>"admin"]);
+
+        return view('home', ['isAd' => "admin"]);
     }
 }

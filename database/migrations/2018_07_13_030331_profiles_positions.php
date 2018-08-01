@@ -13,7 +13,7 @@ class ProfilesPositions extends Migration
      */
     public function up()
     {
-        Schema::create('profiles_positions', function(Blueprint $table){
+        Schema::create('profilesPositions', function(Blueprint $table){
             $table->integer('user_id');
             $table->integer('position_id');
         }); 
@@ -26,6 +26,6 @@ class ProfilesPositions extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles_positions');        
+        Schema::dropIfExists('profilesPositions');
     }
 }

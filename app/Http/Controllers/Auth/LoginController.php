@@ -27,9 +27,7 @@ class LoginController extends Controller
      */
     protected $redirectTo = '/home';
    
-    protected function hasdelete(){
-        
-    }
+   
     /**
      * Create a new controller instance.
      *

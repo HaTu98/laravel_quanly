@@ -14,7 +14,7 @@ class ProfilesLog extends Migration
     public function up()
     {
         
-        Schema::create('profiles_log', function(Blueprint $table){
+        Schema::create('profilesLog', function(Blueprint $table){
             $table->increments('action_id');
             $table->integer('user_id');
             $table->integer('profileUpdate_id');
@@ -31,6 +31,6 @@ class ProfilesLog extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles_log');    
+        Schema::dropIfExists('profilesLog');    
     }
 }

@@ -13,7 +13,7 @@ class TimesLog extends Migration
      */
     public function up()
     {
-        Schema::create('times_log', function(Blueprint $table){
+        Schema::create('timeLog', function(Blueprint $table){
             $table->increments('action_id');
             $table->integer('user_id');
             $table->integer('time_id');
@@ -31,6 +31,6 @@ class TimesLog extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('times_log');
+        Schema::dropIfExists('timeLog');
     }
 }
