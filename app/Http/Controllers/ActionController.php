@@ -150,7 +150,14 @@ class ActionController extends Controller
     {
 
         $users_log = \DB::table('users_log')
-            ->select('users.name', 'users1.name as name_update', 'users_log.action_type', 'users_log.before_action', 'users_log.after_action', 'users_log.created_at')
+            ->select(
+                'users.name',
+                'users1.name as name_update',
+                'users_log.action_type',
+                'users_log.before_action',
+                'users_log.after_action',
+                'users_log.created_at'
+            )
             ->join('users', 'users_log.user_id', '=', 'users.user_id')
             ->join('users as users1', 'users_log.user_update_id', '=', 'users1.user_id')
             ->orderBy('created_at', 'desc')
@@ -162,7 +169,14 @@ class ActionController extends Controller
     public function actionTime()
     {
         $times_log = \DB::table('timeLog')
-            ->select('users.name', 'users1.name as name_update', 'timeLog.action_type', 'timeLog.before_action', 'timeLog.after_action', 'timeLog.created_at')
+            ->select(
+                'users.name',
+                'users1.name as name_update',
+                'timeLog.action_type',
+                'timeLog.before_action',
+                'timeLog.after_action',
+                'timeLog.created_at'
+            )
             ->join('users', 'users.user_id', '=', 'timeLog.user_id')
             ->join('times', 'times.time_id', '=', 'timeLog.time_id')
             ->join('users as users1', 'times.user_id', '=', 'users1.user_id')
@@ -174,7 +188,14 @@ class ActionController extends Controller
     public function actionProfile()
     {
         $profiles_log = \DB::table('profilesLog')
-            ->select("users.name", "users1.name as name_update", "profilesLog.action_type", "profilesLog.before_action", "profilesLog.after_action", "profilesLog.created_at")
+            ->select(
+                "users.name",
+                "users1.name as name_update",
+                "profilesLog.action_type",
+                "profilesLog.before_action",
+                "profilesLog.after_action",
+                "profilesLog.created_at"
+            )
             ->join('users as users', 'profilesLog.user_id', '=', 'users.user_id')
             ->join('users as users1', 'profilesLog.user_update_id', '=', 'users1.user_id')
             ->orderBy('created_at', 'desc')

@@ -123,7 +123,8 @@ class UserController extends Controller
             ->orderBy('date', 'desc')
             ->Paginate(7);
 
-        $first = times::where('user_id', Auth::user()->user_id)->where('date', date('Y-m-d', strtotime(now())))->first();
+        $first = times::where('user_id', Auth::user()->user_id)
+            ->where('date', date('Y-m-d', strtotime(now())))->first();
         $leave = 0;
         if ($first == null) {
             $status = 0;
@@ -413,7 +414,6 @@ class UserController extends Controller
 
         return Excel::download(new ExcelExports($data), 'export.xlsx');
     }
-
 
 
     public function test()
